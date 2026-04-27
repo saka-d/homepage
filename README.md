@@ -1,97 +1,63 @@
-# Sakaguchi Daimon - Homepage
+# Sakaguchi Daimon Homepage
 
-このリポジトリは、GitHub Pagesを用いたsakaguchi daimonの個人ホームページです。
+GitHub Pagesで公開するための、Sakaguchi Daimonの個人/学術ホームページです。ビルド不要の静的HTMLとして構成しています。
 
-## 構成
+## Pages
 
-```
+- `index.html`: トップページ
+- `pages/about.html`: プロフィール、研究関心、学歴、職歴
+- `pages/research.html`: 研究テーマ、プロジェクト、発表
+- `pages/publications.html`: 論文、プレプリント、技術報告、成果物
+- `pages/cv.html`: CV、受賞歴、教育経験、サービス活動
+- `pages/contact.html`: 連絡先、外部プロフィール
+
+## Files
+
+```text
 homepage/
-├── index.html                 # メインページ
+├── assets/
+│   └── profile-placeholder.svg
 ├── pages/
-│   ├── about.html            # 自己紹介ページ
-│   ├── publications.html      # 論文・出版物ページ
-│   └── contact.html          # お問い合わせページ
-├── styles/
-│   └── main.css              # メインスタイルシート
+│   ├── about.html
+│   ├── contact.html
+│   ├── cv.html
+│   ├── publications.html
+│   └── research.html
 ├── scripts/
-│   └── main.js               # メイン機能スクリプト
-├── README.md                 # このファイル
-├── package.json              # プロジェクト情報
-└── .gitignore                # Git無視ファイル
+│   └── main.js
+├── styles/
+│   └── main.css
+├── _config.yml
+├── index.html
+├── package.json
+└── README.md
 ```
 
-## ページ構成
+## Local Preview
 
-### 1. Home (index.html)
-- ホームページのメインランディングページ
-- プロフィール紹介セクション
-- 最新論文へのリンク
-
-### 2. About (pages/about.html)
-- 自己紹介
-- 学歴
-- 研究興味
-- 職務経歴
-
-### 3. Publications (pages/publications.html)
-- 年ごとの論文リスト
-- 掲載誌・学会情報
-- PDF・ArXiv・DOIなどへのリンク
-
-### 4. Contact (pages/contact.html)
-- メールアドレス
-- ソーシャルメディアリンク
-- お問い合わせフォーム（実装予定）
-
-## 使用方法
-
-1. **ローカル開発**
-   - このリポジトリをクローン
-   - `index.html`をブラウザで開く
-
-2. **GitHub Pagesでの公開**
-   - リポジトリ設定で "GitHub Pages" を有効化
-   - Branch: `main`、Folder: `/root` を選択
-   - `https://saka-d.github.io/homepage` でアクセス可能
-
-## カスタマイズ
-
-各ファイルを編集して、以下の情報を更新してください：
-
-- **index.html**: プロフィール情報、リンク
-- **pages/about.html**: 学歴、職務経歴、研究興味
-- **pages/publications.html**: 論文リスト、リンク
-- **pages/contact.html**: メールアドレス、SNSリンク
-- **styles/main.css**: カラースキーム、フォント
-
-## スタイル設定
-
-`styles/main.css`のルート変数を変更してカラースキームをカスタマイズできます：
-
-```css
-:root {
-    --primary-color: #2c3e50;
-    --secondary-color: #3498db;
-    --accent-color: #e74c3c;
-    --bg-color: #ecf0f1;
-    /* ... 他の変数 */
-}
+```bash
+python3 -m http.server 8000
 ```
 
-## ライセンス
+ブラウザで `http://localhost:8000` を開きます。HTMLファイルを直接開いても確認できます。
 
-MIT License
+## GitHub Pages
 
-## 今後の追加予定機能
+GitHubのリポジトリ設定で Pages を有効化し、次の設定にします。
 
-- [ ] お問い合わせフォームの完全実装
-- [ ] 研究プロジェクトページ
-- [ ] ブログ機能
-- [ ] 画像・アイコンの追加
-- [ ] 多言語対応（日本語・英語）
-- [ ] ダークモードサポート
-- [ ] アクセス解析
+- Source: Deploy from a branch
+- Branch: `main`
+- Folder: `/root`
 
----
+公開URLは `https://saka-d.github.io/homepage/` です。
 
-作成日: 2026年4月27日
+## Customize
+
+まずは次を差し替えるとサイトらしくなります。
+
+- `index.html`: 所属、研究分野、News
+- `pages/about.html`: 略歴、学歴、職歴
+- `pages/research.html`: 研究テーマ、プロジェクト、発表
+- `pages/publications.html`: 論文リストとPDF/DOI/コードへのリンク
+- `pages/contact.html`: 所属、研究室、Google Scholar/CiNii/PubMedなどの外部インデックス
+- `assets/profile-placeholder.svg`: 顔写真や正式なプロフィール画像

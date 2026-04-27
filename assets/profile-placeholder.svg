@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="440" viewBox="0 0 440 440" role="img" aria-labelledby="title desc">
+    <title id="title">Sakaguchi Daimon profile placeholder</title>
+    <desc id="desc">A simple circular monogram image for the personal homepage.</desc>
+    <defs>
+        <linearGradient id="bg" x1="42" y1="42" x2="398" y2="398" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#1d4ed8"/>
+            <stop offset="0.48" stop-color="#0f766e"/>
+            <stop offset="1" stop-color="#b45309"/>
+        </linearGradient>
+    </defs>
+    <rect width="440" height="440" rx="220" fill="#ffffff"/>
+    <circle cx="220" cy="220" r="202" fill="url(#bg)"/>
+    <circle cx="220" cy="220" r="162" fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-opacity="0.42" stroke-width="2"/>
+    <text x="50%" y="52%" text-anchor="middle" dominant-baseline="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="104" font-weight="800" letter-spacing="0">SD</text>
+</svg>

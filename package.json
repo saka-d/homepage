@@ -1,7 +1,8 @@
 {
-  "name": "Sakaguchi Daimon - Homepage",
-  "description": "Personal academic homepage for Sakaguchi Daimon",
+  "name": "sakaguchi-daimon-homepage",
+  "description": "Personal academic homepage for Sakaguchi Daimon on GitHub Pages.",
   "version": "1.0.0",
+  "private": true,
   "author": "Sakaguchi Daimon",
   "license": "MIT",
   "repository": {

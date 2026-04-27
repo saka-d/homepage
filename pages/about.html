@@ -3,74 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Sakaguchi Daimon</title>
+    <meta name="description" content="Sakaguchi Daimonの所属、研究テーマ、研究関心を掲載しています。">
+    <title>About | Sakaguchi Daimon</title>
     <link rel="stylesheet" href="../styles/main.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="navbar-container">
-                <h1 class="logo">Sakaguchi Daimon</h1>
-                <ul class="nav-menu">
-                    <li><a href="../index.html">Home</a></li>
-                    <li><a href="about.html" class="active">About</a></li>
-                    <li><a href="publications.html">Publications</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </div>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <nav class="navbar" aria-label="Main navigation">
+            <a class="site-title" href="../index.html">Sakaguchi Daimon</a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="primary-navigation">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="about.html" class="active" aria-current="page">About</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="publications.html">Publications</a></li>
+                <li><a href="cv.html">CV</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
         </nav>
     </header>
 
-    <main>
-        <section>
+    <main id="main">
+        <section class="page-hero">
             <div class="container">
-                <h2>About Me</h2>
-                
-                <h3>Profile</h3>
-                <p>
-                    ここに自己紹介文を記載します。
-                    専門分野、研究テーマ、経歴などを詳しく説明できます。
+                <p class="eyebrow">About</p>
+                <h1>Profile</h1>
+                <p class="lead">
+                    横浜国立大学 理工学府 化学・生命系理工学専攻、
+                    物理有機化学・分子設計研究室（五東研究室）に所属しています。
                 </p>
+            </div>
+        </section>
 
-                <h3>Education</h3>
-                <ul>
-                    <li>
-                        <strong>修士号（専攻：）</strong><br>
-                        〇〇大学 大学院 （年月）
-                    </li>
-                    <li>
-                        <strong>学士号（専攻：）</strong><br>
-                        〇〇大学 （年月）
-                    </li>
-                </ul>
+        <section class="section-band">
+            <div class="container content-grid">
+                <aside class="side-summary">
+                    <h2>Sakaguchi Daimon</h2>
+                    <p>
+                        横浜国立大学 理工学府 化学・生命系理工学専攻<br>
+                        物理有機化学・分子設計研究室（五東研究室）
+                    </p>
+                    <ul class="tag-list" aria-label="Research keywords">
+                        <li>Physical organic chemistry</li>
+                        <li>Molecular design</li>
+                        <li>Cheminformatics</li>
+                        <li>Machine learning</li>
+                    </ul>
+                </aside>
+                <div class="content-stack">
+                    <article>
+                        <h2>Biography</h2>
+                        <p>
+                            横浜国立大学 理工学府 化学・生命系理工学専攻に所属し、
+                            物理有機化学・分子設計研究室（五東研究室）で研究を行っています。
+                            主な研究テーマは、立体電子状態インフォマティクスを用いた反応選択性の起源の解明です。
+                        </p>
+                        <p>
+                            機械学習、計算化学、物理有機化学を組み合わせることで、
+                            有機反応の選択性を定量的に予測し、その背後にある立体因子・電子因子を解釈することを目指しています。
+                        </p>
+                    </article>
 
-                <h3>Research Interests</h3>
-                <ul>
-                    <li>研究テーマ1</li>
-                    <li>研究テーマ2</li>
-                    <li>研究テーマ3</li>
-                </ul>
+                    <article>
+                        <h2>Research Interests</h2>
+                        <ul class="detail-list">
+                            <li>
+                                <strong>立体電子状態インフォマティクス</strong>
+                                <span>三次元構造と電子状態に基づいて、有機反応の選択性を表現・解析します。</span>
+                            </li>
+                            <li>
+                                <strong>反応選択性の予測と解釈</strong>
+                                <span>ケトンの求核付加反応や不斉還元を対象に、立体因子と電子因子の寄与を調べています。</span>
+                            </li>
+                            <li>
+                                <strong>データ駆動型有機化学</strong>
+                                <span>機械学習モデルを活用し、実験・計算データから反応性や選択性の規則を抽出します。</span>
+                            </li>
+                        </ul>
+                    </article>
 
-                <h3>Work Experience</h3>
-                <ul>
-                    <li>
-                        <strong>職種</strong> - 〇〇会社（年月 - 現在）
-                    </li>
-                    <li>
-                        <strong>職種</strong> - 〇〇会社（年月 - 年月）
-                    </li>
-                </ul>
+                    <article>
+                        <h2>Affiliation</h2>
+                        <ol class="timeline-list compact">
+                            <li>
+                                <time>Current</time>
+                                <span>横浜国立大学 理工学府 化学・生命系理工学専攻</span>
+                            </li>
+                        </ol>
+                    </article>
+
+                    <article>
+                        <h2>Laboratory</h2>
+                        <ol class="timeline-list compact">
+                            <li>
+                                <time>Lab</time>
+                                <span>
+                                    <a href="https://poclab-web.github.io/homepage/" target="_blank" rel="noopener noreferrer">物理有機化学・分子設計研究室（五東研究室 / POCLab）</a>
+                                </span>
+                            </li>
+                        </ol>
+                    </article>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 Sakaguchi Daimon. All rights reserved.</p>
-            <p>
-                <a href="https://github.com/saka-d" target="_blank">GitHub</a> | 
-                <a href="contact.html">Contact</a>
-            </p>
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p>
+            <p><a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p>
         </div>
     </footer>
 
