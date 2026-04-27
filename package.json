@@ -1,0 +1,17 @@
+{
+  "name": "Sakaguchi Daimon - Homepage",
+  "description": "Personal academic homepage for Sakaguchi Daimon",
+  "version": "1.0.0",
+  "author": "Sakaguchi Daimon",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/saka-d/homepage.git"
+  },
+  "keywords": [
+    "homepage",
+    "academic",
+    "portfolio",
+    "github-pages"
+  ]
+}

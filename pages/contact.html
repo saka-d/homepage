@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Sakaguchi Daimon</title>
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-container">
+                <h1 class="logo">Sakaguchi Daimon</h1>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="publications.html">Publications</a></li>
+                    <li><a href="contact.html" class="active">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <div class="container">
+                <h2>Contact</h2>
+                
+                <h3>Get in Touch</h3>
+                <p>
+                    ご質問やご不明な点がございましたら、以下の方法でお気軽にお問い合わせください。
+                </p>
+
+                <h3>Contact Information</h3>
+                <div>
+                    <p>
+                        <strong>Email:</strong><br>
+                        <a href="mailto:your-email@example.com">your-email@example.com</a>
+                    </p>
+                    <p>
+                        <strong>GitHub:</strong><br>
+                        <a href="https://github.com/saka-d" target="_blank">github.com/saka-d</a>
+                    </p>
+                    <p>
+                        <strong>Twitter/X:</strong><br>
+                        <a href="https://twitter.com/yourhandle" target="_blank">@yourhandle</a>
+                    </p>
+                </div>
+
+                <h3>Contact Form</h3>
+                <p style="color: #7f8c8d; font-size: 0.95rem;">
+                    注）お問い合わせフォームは現在開発中です。
+                    メールで直接ご連絡いただくことをお勧めします。
+                </p>
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject *</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Sakaguchi Daimon. All rights reserved.</p>
+            <p>
+                <a href="https://github.com/saka-d" target="_blank">GitHub</a> | 
+                <a href="contact.html">Contact</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="../scripts/main.js"></script>
+</body>
+</html>

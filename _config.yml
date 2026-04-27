@@ -1,0 +1,19 @@
+# GitHub Pages configuration for Jekyll
+# This file can be left empty or minimal for static HTML sites
+
+# Site settings
+title: "Sakaguchi Daimon"
+description: "Personal academic homepage"
+url: "https://saka-d.github.io/homepage"
+baseurl: "/homepage"
+
+# Build settings
+theme: null
+plugins: []
+
+# Exclude unnecessary files from Jekyll processing
+exclude:
+  - .gitignore
+  - package.json
+  - README.md
+  - node_modules
