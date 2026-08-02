@@ -22,12 +22,34 @@ html {
 }
 
 body {
+    position: relative;
     margin: 0;
     color: var(--color-ink);
-    background: var(--color-soft);
+    background:
+        linear-gradient(145deg, rgba(29, 78, 216, 0.08), rgba(15, 118, 110, 0.06) 42%, rgba(180, 83, 9, 0.05)),
+        var(--color-soft);
     font-family: Inter, "Hiragino Kaku Gothic ProN", "Yu Gothic", "YuGothic", Meiryo, system-ui, sans-serif;
     font-size: 16px;
     line-height: 1.7;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 3rem -12% auto -12%;
+    z-index: 0;
+    height: 78vh;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, rgba(29, 78, 216, 0.18) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(15, 118, 110, 0.16) 1px, transparent 1px),
+        linear-gradient(145deg, rgba(29, 78, 216, 0.16), rgba(15, 118, 110, 0.08), transparent 72%);
+    background-size: 64px 64px, 64px 64px, 100% 100%;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, rgba(0, 0, 0, 0.52) 18%, rgba(0, 0, 0, 0.34) 66%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, rgba(0, 0, 0, 0.52) 18%, rgba(0, 0, 0, 0.34) 66%, transparent 100%);
+    opacity: 0.86;
+    transform: perspective(820px) rotateX(62deg) translateY(-8%);
+    transform-origin: top center;
 }
 
 img {
@@ -64,6 +86,15 @@ h1 {
     margin-bottom: 1rem;
     font-size: 4.6rem;
     letter-spacing: 0;
+}
+
+.name-roman {
+    display: block;
+    margin-top: 0.75rem;
+    color: var(--color-muted);
+    font-size: clamp(1.15rem, 3vw, 1.7rem);
+    font-weight: 600;
+    line-height: 1.3;
 }
 
 h2 {
@@ -110,6 +141,12 @@ p {
     border-bottom: 1px solid rgba(217, 226, 236, 0.9);
     background: rgba(255, 255, 255, 0.94);
     backdrop-filter: blur(16px);
+}
+
+main,
+.site-footer {
+    position: relative;
+    z-index: 1;
 }
 
 .navbar {
@@ -184,8 +221,29 @@ p {
     position: relative;
     overflow: hidden;
     background:
-        linear-gradient(120deg, rgba(29, 78, 216, 0.12), rgba(15, 118, 110, 0.1)),
-        var(--color-paper);
+        linear-gradient(120deg, rgba(29, 78, 216, 0.1), rgba(15, 118, 110, 0.08)),
+        rgba(255, 255, 255, 0.76);
+    backdrop-filter: blur(10px);
+}
+
+.intro-section::before,
+.page-hero::before {
+    content: "";
+    position: absolute;
+    inset: auto -8% -34% -8%;
+    z-index: 0;
+    height: 68%;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, rgba(29, 78, 216, 0.24) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(15, 118, 110, 0.2) 1px, transparent 1px),
+        linear-gradient(125deg, transparent, rgba(29, 78, 216, 0.12), rgba(15, 118, 110, 0.08));
+    background-size: 58px 58px, 58px 58px, 100% 100%;
+    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.3) 55%, transparent 100%);
+    mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.3) 55%, transparent 100%);
+    opacity: 0.72;
+    transform: perspective(760px) rotateX(62deg);
+    transform-origin: bottom center;
 }
 
 .intro-section {
@@ -194,6 +252,12 @@ p {
 
 .page-hero {
     padding: clamp(3rem, 7vw, 5rem) 0;
+}
+
+.intro-section > .container,
+.page-hero > .container {
+    position: relative;
+    z-index: 1;
 }
 
 .intro-grid {
@@ -321,11 +385,12 @@ p {
 
 .section-band {
     padding: clamp(3rem, 6vw, 5rem) 0;
-    background: var(--color-paper);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
 }
 
 .section-band.muted {
-    background: var(--color-soft);
+    background: rgba(245, 247, 251, 0.72);
 }
 
 .section-heading {

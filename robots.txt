@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /homepage/
+
+Sitemap: https://saka-d.github.io/homepage/sitemap.xml

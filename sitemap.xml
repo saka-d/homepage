@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://saka-d.github.io/homepage/</loc>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://saka-d.github.io/homepage/pages/about.html</loc>
+    </url>
+    <url>
+        <loc>https://saka-d.github.io/homepage/pages/research.html</loc>
+    </url>
+    <url>
+        <loc>https://saka-d.github.io/homepage/pages/publications.html</loc>
+    </url>
+    <url>
+        <loc>https://saka-d.github.io/homepage/pages/cv.html</loc>
+    </url>
+    <url>
+        <loc>https://saka-d.github.io/homepage/pages/contact.html</loc>
+    </url>
+</urlset>
