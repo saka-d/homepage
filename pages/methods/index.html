@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="坂口大門の計算化学・ケモインフォマティクスノート。構造・電子状態計算と、化学情報・データ解析の二つの流れを解説します。">
+    <meta name="author" content="Daimon Sakaguchi"><meta name="DC.creator" content="Daimon Sakaguchi"><meta name="robots" content="index,follow,max-image-preview:large"><meta name="description" content="坂口大門の計算化学・ケモインフォマティクスノート。構造・電子状態計算と、化学情報・データ解析の二つの流れを解説します。">
     <link rel="canonical" href="https://saka-d.github.io/homepage/pages/methods/"><link rel="alternate" hreflang="ja" href="https://saka-d.github.io/homepage/pages/methods/"><link rel="alternate" hreflang="en" href="https://saka-d.github.io/homepage/en/pages/methods/"><link rel="alternate" hreflang="x-default" href="https://saka-d.github.io/homepage/pages/methods/">
     <meta property="og:type" content="website"><meta property="og:locale" content="ja_JP"><meta property="og:site_name" content="坂口 大門 | Daimon Sakaguchi">
     <meta property="og:title" content="計算化学ノート | 坂口 大門"><meta property="og:description" content="構造・電子状態計算とケモインフォマティクス・データ解析を、目的別のワークフローとして整理します。">
     <meta property="og:url" content="https://saka-d.github.io/homepage/pages/methods/"><meta name="twitter:card" content="summary">
     <title>計算化学ノート | 坂口 大門</title>
     <link rel="icon" href="../../assets/profile-placeholder.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="../../styles/main.css?v=20260804-9">
-</head>
+    <link rel="stylesheet" href="../../styles/main.css?v=20260804-12">
+<script type="application/ld+json" data-site-schema>{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://saka-d.github.io/homepage/#website","name":"坂口 大門 | Daimon Sakaguchi","url":"https://saka-d.github.io/homepage/","inLanguage":["ja","en"],"potentialAction":{"@type":"SearchAction","target":"https://saka-d.github.io/homepage/pages/search.html?q={search_term_string}","query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://saka-d.github.io/homepage/#person","name":"Daimon Sakaguchi","alternateName":"坂口 大門","url":"https://saka-d.github.io/homepage/","affiliation":{"@type":"CollegeOrUniversity","name":"Yokohama National University","url":"https://www.ynu.ac.jp/english/"},"sameAs":["https://researchmap.jp/sakaguchi-daimon","https://scholar.google.com/scholar?q=%22Daimon+Sakaguchi%22","https://github.com/saka-d"],"knowsAbout":["Computational chemistry","Physical organic chemistry","Reaction selectivity","Cheminformatics","Stereoelectronic-state informatics"]},{"@type":"TechArticle","@id":"https://saka-d.github.io/homepage/pages/methods/#article","url":"https://saka-d.github.io/homepage/pages/methods/","headline":"分子を計算し、データから解釈する","description":"坂口大門の計算化学・ケモインフォマティクスノート。構造・電子状態計算と、化学情報・データ解析の二つの流れを解説します。","inLanguage":"ja","dateModified":"2026-08-04","author":{"@id":"https://saka-d.github.io/homepage/#person"},"isPartOf":{"@id":"https://saka-d.github.io/homepage/#website"}}]}</script></head>
 <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header"><nav class="navbar" aria-label="Main navigation"><a class="site-title" href="../../index.html">坂口大門のページ</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle navigation"><span></span><span></span><span></span></button><ul class="nav-menu" id="primary-navigation"><li><a href="../../index.html">Home</a></li><li><a href="../about.html">About</a></li><li><a href="../research.html">Research</a></li><li><a href="index.html" class="active" aria-current="page">Methods</a></li><li><a href="../publications.html">Publications</a></li><li><a href="../cv.html">CV</a></li><li><a href="../contact.html">Contact</a></li></ul><div class="language-switcher" aria-label="Language"><a href="index.html" lang="ja" hreflang="ja" class="active" aria-current="page" aria-label="日本語">JA</a><a href="../../en/pages/methods/index.html" lang="en" hreflang="en" aria-label="English">EN</a></div></nav></header>
+    <a class="skip-link" href="#main">本文へ移動</a>
+    <header class="site-header"><nav class="navbar" aria-label="メインナビゲーション"><a class="site-title" href="../../index.html">坂口大門のページ</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="ナビゲーションを開く"><span></span><span></span><span></span></button><ul class="nav-menu" id="primary-navigation"><li><a href="../../index.html">ホーム</a></li><li><a href="../about.html">プロフィール</a></li><li><a href="../research.html">研究</a></li><li><a href="index.html" class="active" aria-current="page">計算化学ノート</a></li><li><a href="../publications.html">業績</a></li><li><a href="../cv.html">経歴</a></li><li><a href="../contact.html">リンク</a></li></ul><a class="site-search-link" href="../search.html" aria-label="サイト全体を検索">検索</a><div class="language-switcher" aria-label="言語"><a href="index.html" lang="ja" hreflang="ja" class="active" aria-current="page" aria-label="日本語">JA</a><a href="../../en/pages/methods/index.html" lang="en" hreflang="en" aria-label="英語">EN</a></div></nav></header>
 
     <main id="main">
         <section class="page-hero docs-hero"><div class="container"><p class="eyebrow">Computational Chemistry and Chemical Data</p><h1>分子を計算し、データから解釈する</h1><p class="lead">三次元構造と電子状態を求める流れ、化学構造を情報として比較・モデル化する流れを分け、最後に立体電子記述子から反応選択性の解釈へ接続します。</p></div></section>
@@ -37,7 +37,7 @@
                 <li><a href="gaussian.html"><span class="method-number">03</span><span><strong>Gaussian</strong><span>SCF、構造最適化、振動数、TS、IRC</span></span></a></li>
                 <li><a href="grrm.html"><span class="method-number">04</span><span><strong>GRRM</strong><span>ADDF、AFIR、SC-AFIR、MC-AFIR</span></span></a></li>
                 <li><a href="pyscf.html"><span class="method-number">05</span><span><strong>PySCF</strong><span>SCF・DFT、最適化、GPU4PySCF、Colab</span></span></a></li>
-                <li><a href="psi4.html"><span class="method-number">06</span><span><strong>Psi4</strong><span>SAPT、Fukui関数、dual descriptor</span></span></a></li>
+                <li><a href="psi4.html"><span class="method-number">06</span><span><strong>Psi4</strong><span>SAPT、Fukui関数、デュアル記述子</span></span></a></li>
                 <li><a href="orca.html"><span class="method-number">07</span><span><strong>ORCA</strong><span>EDA-NOCV、LED、相互作用エネルギー</span></span></a></li>
                 <li><a href="cube.html"><span class="method-number">08</span><span><strong>Cube files</strong><span>格子、電子密度、軌道、静電ポテンシャル</span></span></a></li>
                 <li><a href="multiwfn.html"><span class="method-number">09</span><span><strong>Multiwfn</strong><span>NCI、IGM、IGMH、IRI、実空間関数</span></span></a></li>
@@ -66,6 +66,6 @@
     </main>
 
     <footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer>
-    <script src="../../scripts/main.js?v=20260804-3"></script>
+    <script src="../../scripts/main.js?v=20260804-12"></script>
 </body>
 </html>

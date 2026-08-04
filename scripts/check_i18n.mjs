@@ -17,7 +17,9 @@ for (const englishFile of englishFiles) {
   if (!en.includes('class="language-switcher"')) errors.push(`${englishFile}: language switcher missing`);
   if (!en.includes('rel="alternate" hreflang="ja"')) errors.push(`${englishFile}: hreflang=ja missing`);
   if (!en.match(/rel="canonical" href="[^"]+\/homepage\/en\//)) errors.push(`${englishFile}: English canonical missing`);
-  const allowedJapanese = en.replaceAll(/<span lang="ja">[\s\S]*?<\/span>/g, "");
+  const allowedJapanese = en
+    .replaceAll(/<span lang="ja">[\s\S]*?<\/span>/g, "")
+    .replaceAll(/<script type="application\/ld\+json"[\s\S]*?<\/script>/g, "");
   if (/[぀-ヿ㐀-鿿]/u.test(allowedJapanese)) errors.push(`${englishFile}: untranslated Japanese text remains`);
   if (!ja.includes('class="language-switcher"')) errors.push(`${source}: language switcher missing`);
   if (!ja.includes('rel="alternate" hreflang="en"')) errors.push(`${source}: hreflang=en missing`);
@@ -31,7 +33,7 @@ for (const englishFile of englishFiles) {
   if (en.includes("<msubsup><mo>∥")) errors.push(`${englishFile}: malformed norm MathML remains`);
 }
 
-if (englishFiles.length !== 28) errors.push(`Expected 28 English pages, found ${englishFiles.length}`);
+if (englishFiles.length !== 29) errors.push(`Expected 29 English pages, found ${englishFiles.length}`);
 if (errors.length) {
   console.error(errors.join("\n"));
   process.exit(1);

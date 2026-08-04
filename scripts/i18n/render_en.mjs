@@ -1,7 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
+import { siteConfig } from "../site-config.mjs";
 
-const base = "https://saka-d.github.io/homepage";
+const base = siteConfig.baseUrl;
 const navItems = [
   ["home", "Home", "index.html"],
   ["about", "About", "pages/about.html"],
@@ -45,7 +46,7 @@ export function renderEnglishPage(page) {
     <meta name="description" content="${page.description}">
     <link rel="canonical" href="${englishUrl}"><link rel="alternate" hreflang="ja" href="${sourceUrl}"><link rel="alternate" hreflang="en" href="${englishUrl}"><link rel="alternate" hreflang="x-default" href="${sourceUrl}">
     <meta property="og:type" content="${page.ogType || "website"}"><meta property="og:locale" content="en_US"><meta property="og:site_name" content="Daimon Sakaguchi"><meta property="og:title" content="${page.title}"><meta property="og:description" content="${page.description}"><meta property="og:url" content="${englishUrl}"><meta name="twitter:card" content="summary">
-    <title>${page.title}</title><link rel="icon" href="${assets}/profile-placeholder.svg" type="image/svg+xml"><link rel="stylesheet" href="${styles}/main.css?v=20260804-9">${extraHead}
+    <title>${page.title}</title><link rel="icon" href="${assets}/profile-placeholder.svg" type="image/svg+xml"><link rel="stylesheet" href="${styles}/main.css?v=${siteConfig.assetVersion}">${extraHead}
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -53,7 +54,7 @@ export function renderEnglishPage(page) {
 ${page.subnav || ""}
     <main id="main">${body}</main>
     <footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer>
-    <script src="${scripts}/main.js?v=20260804-3"></script>
+    <script src="${scripts}/main.js?v=${siteConfig.assetVersion}"></script>
 </body>
 </html>
 `, "utf8");

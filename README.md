@@ -1,63 +1,45 @@
 # Sakaguchi Daimon Homepage
 
-GitHub Pagesで公開するための、Sakaguchi Daimonの個人/学術ホームページです。ビルド不要の静的HTMLとして構成しています。
+坂口大門の個人・学術ホームページです。GitHub Pagesで公開する静的HTMLサイトで、日本語版と英語版、計算化学ノート、再現可能な計算例を含みます。
 
-## Pages
+公開URL: https://saka-d.github.io/homepage/
 
-- `index.html`: トップページ
-- `pages/about.html`: プロフィール、研究関心、学歴、職歴
-- `pages/research.html`: 研究テーマ、プロジェクト、発表
-- `pages/publications.html`: 論文、プレプリント、技術報告、成果物
-- `pages/cv.html`: CV、受賞歴、教育経験、サービス活動
-- `pages/contact.html`: 連絡先、外部プロフィール
+## Local preview
 
-## Files
-
-```text
-homepage/
-├── assets/
-│   └── profile-placeholder.svg
-├── pages/
-│   ├── about.html
-│   ├── contact.html
-│   ├── cv.html
-│   ├── publications.html
-│   └── research.html
-├── scripts/
-│   └── main.js
-├── styles/
-│   └── main.css
-├── _config.yml
-├── index.html
-├── package.json
-└── README.md
+```sh
+python3 -m http.server 8001
 ```
 
-## Local Preview
+`http://127.0.0.1:8001/` を開いて確認します。サイト内検索はJSONを取得するため、HTMLファイルを直接開かずHTTPサーバーを使用してください。
 
-```bash
-python3 -m http.server 8000
+## Generate and verify
+
+```sh
+npm run verify:site
 ```
 
-ブラウザで `http://localhost:8000` を開きます。HTMLファイルを直接開いても確認できます。
+このコマンドは次を順に実行します。
 
-## GitHub Pages
+- 日英29組のページを生成
+- 計算例、Multiwfnへの接続、研究ワークフローを反映
+- 用語集、検索ページ、検索索引、JSON-LDを生成
+- hreflang、翻訳漏れ、ローカルリンク、重複ID、canonical、検索索引、計算メタデータを検査
 
-GitHubのリポジトリ設定で Pages を有効化し、次の設定にします。
+計算結果そのものを再生成する場合だけ、Python環境とNCIplotを用意して `npm run examples:generate` を実行します。条件は [assets/calculations/README.md](assets/calculations/README.md) を参照してください。
 
-- Source: Deploy from a branch
-- Branch: `main`
-- Folder: `/root`
+## Main files
 
-公開URLは `https://saka-d.github.io/homepage/` です。
+- `scripts/i18n/`: 日英ページの本文ソースとレンダラー
+- `scripts/add_calculation_examples.mjs`: 計算結果と分子ビューアーの接続
+- `scripts/add_cross_chapter_content.mjs`: Multiwfn接続と研究ワークフロー
+- `scripts/enhance_site_features.mjs`: 検索、用語集、SEO、表記統一
+- `scripts/validate_site.mjs`: 公開前の静的検査
+- `scripts/main.js`: 検索、絞り込み、ナビゲーションの動作
+- `styles/main.css`: 全体の表示
+- `assets/calculations/`: 計算結果と来歴メタデータ
 
-## Customize
+編集と再生成の詳しい規則は [CONTRIBUTING.md](CONTRIBUTING.md) にまとめています。
 
-まずは次を差し替えるとサイトらしくなります。
+## Deployment
 
-- `index.html`: 所属、研究分野、News
-- `pages/about.html`: 略歴、学歴、職歴
-- `pages/research.html`: 研究テーマ、プロジェクト、発表
-- `pages/publications.html`: 論文リストとPDF/DOI/コードへのリンク
-- `pages/contact.html`: 所属、研究室、Google Scholar/CiNii/PubMedなどの外部インデックス
-- `assets/profile-placeholder.svg`: 顔写真や正式なプロフィール画像
+`main` へのpush時にGitHub Actionsが `npm run verify:release` を実行し、再生成と冪等性検査に成功した内容をGitHub Pagesへ公開します。

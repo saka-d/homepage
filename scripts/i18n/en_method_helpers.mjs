@@ -1,4 +1,5 @@
 import { expandMethodSections } from "./en_method_expansions.mjs";
+import { siteConfig } from "../site-config.mjs";
 
 const electronicChapters = [
   ["rdkit", "01 RDKit"], ["xtb", "02 xTB"], ["gaussian", "03 Gaussian"],
@@ -35,7 +36,7 @@ export function methodPage({ slug, title, eyebrow, lead, position, input, output
     file: `pages/methods/${slug}.html`, active: "methods", ogType: "article",
     title: `${title} | Computational Chemistry Notes`, description,
     subnav: chapterNav(type, slug),
-    body: `<section class="page-hero docs-hero"><div class="container"><p class="breadcrumb"><a href="index.html">Computational Chemistry Notes</a> / ${number} ${title}</p><p class="eyebrow">${eyebrow}</p><h1>${title}</h1><p class="lead">${lead}</p><dl class="tool-summary"><div><dt>Role</dt><dd>${position}</dd></div><div><dt>Typical input</dt><dd>${input}</dd></div><div><dt>Typical output</dt><dd>${output}</dd></div></dl></div></section><section class="section-band"><div class="container docs-layout"><aside class="docs-toc" aria-label="Page contents"><h2>In this chapter</h2><ol>${toc}</ol></aside><div class="docs-content">${content}<p class="method-review">Last reviewed: August 4, 2026. Check the linked official documentation for syntax specific to the installed software version.</p></div></div></section>`,
+    body: `<section class="page-hero docs-hero"><div class="container"><p class="breadcrumb"><a href="index.html">Computational Chemistry Notes</a> / ${number} ${title}</p><p class="eyebrow">${eyebrow}</p><h1>${title}</h1><p class="lead">${lead}</p><dl class="tool-summary"><div><dt>Role</dt><dd>${position}</dd></div><div><dt>Typical input</dt><dd>${input}</dd></div><div><dt>Typical output</dt><dd>${output}</dd></div></dl></div></section><section class="section-band"><div class="container docs-layout"><aside class="docs-toc" aria-label="Page contents"><h2>In this chapter</h2><ol>${toc}</ol></aside><div class="docs-content">${content}<p class="method-review">Last reviewed: ${siteConfig.lastReviewedEn}. Check the linked official documentation for syntax specific to the installed software version.</p></div></div></section>`,
   };
 }
 

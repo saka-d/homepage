@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { siteConfig } from "./site-config.mjs";
 
 const files = [
   "index.html",
@@ -30,6 +31,7 @@ const files = [
   "pages/methods/electronic-descriptors.html",
   "pages/methods/reproducibility.html",
   "pages/methods/glossary.html",
+  "pages/search.html",
 ];
 
 for (const file of files) {
@@ -56,11 +58,11 @@ for (const file of files) {
     const englishHref = path
       .relative(path.dirname(file), englishFile)
       .replaceAll(path.sep, "/");
-    const switcher = `<div class="language-switcher" aria-label="Language"><a href="${currentHref}" lang="ja" hreflang="ja" class="active" aria-current="page" aria-label="日本語">JA</a><a href="${englishHref}" lang="en" hreflang="en" aria-label="English">EN</a></div>`;
+    const switcher = `<div class="language-switcher" aria-label="言語"><a href="${currentHref}" lang="ja" hreflang="ja" class="active" aria-current="page" aria-label="日本語">JA</a><a href="${englishHref}" lang="en" hreflang="en" aria-label="英語">EN</a></div>`;
     html = html.replace(/(<\/ul>)(\s*<\/nav>)/, `$1${switcher}$2`);
   }
 
-  html = html.replace(/main\.css\?v=20260804-\d+/g, "main.css?v=20260804-9");
-  html = html.replace("main.js?v=20260804-2", "main.js?v=20260804-3");
+  html = html.replace(/main\.css\?v=[^"']+/g, `main.css?v=${siteConfig.assetVersion}`);
+  html = html.replace(/main\.js\?v=[^"']+/g, `main.js?v=${siteConfig.assetVersion}`);
   fs.writeFileSync(file, html);
 }

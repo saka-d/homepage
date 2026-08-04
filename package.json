@@ -6,9 +6,15 @@
   "scripts": {
     "examples:generate": "sh scripts/calculations/run_examples.sh",
     "examples:markup": "node scripts/add_calculation_examples.mjs",
+    "content:enhance": "node scripts/add_cross_chapter_content.mjs",
+    "site:enhance": "node scripts/enhance_site_features.mjs",
+    "site:validate": "node scripts/validate_site.mjs",
+    "site:idempotency": "node scripts/check_idempotency.mjs",
     "i18n:markup": "node scripts/add_i18n_markup.mjs",
-    "i18n:generate": "node scripts/generate_english_site.mjs && node scripts/add_calculation_examples.mjs",
-    "i18n:check": "node scripts/check_i18n.mjs"
+    "i18n:generate": "node scripts/generate_english_site.mjs && node scripts/add_calculation_examples.mjs && node scripts/add_cross_chapter_content.mjs && node scripts/enhance_site_features.mjs",
+    "i18n:check": "node scripts/check_i18n.mjs",
+    "verify:site": "npm run i18n:generate && npm run i18n:markup && npm run i18n:check && npm run site:validate",
+    "verify:release": "npm run verify:site && npm run site:idempotency"
   },
   "author": "Sakaguchi Daimon",
   "license": "MIT",

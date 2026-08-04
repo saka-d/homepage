@@ -10,10 +10,10 @@ const resourceNav = (active, lang) => `<nav class="track-switcher" aria-label="R
 const docsBody = ({ lang, slug, eyebrow, title, lead, sections }) => {
   const indexLabel = lang === "ja" ? "計算化学ノート" : "Computational Chemistry Notes";
   const tocTitle = lang === "ja" ? "この章の内容" : "In this chapter";
-  const reviewed = lang === "ja" ? "最終確認: 2026年8月4日" : "Last reviewed: August 4, 2026";
+  const reviewed = lang === "ja" ? `最終確認: ${siteConfig.lastReviewedJa}` : `Last reviewed: ${siteConfig.lastReviewedEn}`;
   const toc = sections.map((section) => `<li><a href="#${section.id}">${section.toc || section.title}</a></li>`).join("");
   const content = sections.map((section, index) => `<section class="docs-section" id="${section.id}"><h2>${index + 1}. ${section.title}</h2>${section.html}</section>`).join("");
-  return `<section class="page-hero docs-hero"><div class="container"><p class="breadcrumb"><a href="index.html">${indexLabel}</a> / ${title}</p><p class="eyebrow">${eyebrow}</p><h1>${title}</h1><p class="lead">${lead}</p></div></section><section class="section-band"><div class="container docs-layout"><aside class="docs-toc" aria-label="Page contents"><h2>${tocTitle}</h2><ol>${toc}</ol></aside><div class="docs-content">${content}<p class="method-review">${reviewed}</p></div></div></section>`;
+  return `<section class="page-hero docs-hero"><div class="container"><p class="breadcrumb"><a href="index.html">${indexLabel}</a> / ${title}</p><p class="eyebrow">${eyebrow}</p><h1>${title}</h1><p class="lead">${lead}</p></div></section><section class="section-band"><div class="container docs-layout"><aside class="docs-toc" aria-label="${lang === "ja" ? "ページ内目次" : "Page contents"}"><h2>${tocTitle}</h2><ol>${toc}</ol></aside><div class="docs-content">${content}<p class="method-review">${reviewed}</p></div></div></section>`;
 };
 
 const pair = ({ file, active, ja, en, jaSubnav = "", enSubnav = "" }) => [
@@ -122,3 +122,4 @@ const entries = [
 
 export const japaneseSupplementalPages = entries.filter((_, index) => index % 2 === 0);
 export const englishSupplementalPages = entries.filter((_, index) => index % 2 === 1);
+import { siteConfig } from "../site-config.mjs";

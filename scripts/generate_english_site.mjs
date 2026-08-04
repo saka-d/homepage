@@ -7,21 +7,22 @@ import { methodPagesCore2 } from "./i18n/en_methods_core2.mjs";
 import { methodPagesData } from "./i18n/en_methods_data.mjs";
 import { renderJapanesePage } from "./i18n/render_ja.mjs";
 import { englishSupplementalPages, japaneseSupplementalPages } from "./i18n/supplemental_pages.mjs";
+import { siteConfig } from "./site-config.mjs";
 
 for (const page of japaneseSupplementalPages) renderJapanesePage(page);
 
 const pages = [...mainPages, ...academicPages, ...methodPagesCore1, ...methodPagesCore2, ...methodPagesData, ...englishSupplementalPages];
 for (const page of pages) renderEnglishPage(page);
 
-const base = "https://saka-d.github.io/homepage";
+const base = siteConfig.baseUrl;
 const sitemapEntries = pages.flatMap((page) => {
   const ja = page.file === "index.html" ? `${base}/` : `${base}/${page.file}`;
   const en = page.file === "index.html" ? `${base}/en/` : `${base}/en/${page.file}`;
   const alternates = `<xhtml:link rel="alternate" hreflang="ja" href="${ja}"/><xhtml:link rel="alternate" hreflang="en" href="${en}"/><xhtml:link rel="alternate" hreflang="x-default" href="${ja}"/>`;
   const priority = page.file === "index.html" ? "<priority>1.0</priority>" : "";
   return [
-    `<url><loc>${ja}</loc><lastmod>2026-08-04</lastmod>${priority}${alternates}</url>`,
-    `<url><loc>${en}</loc><lastmod>2026-08-04</lastmod>${alternates}</url>`,
+    `<url><loc>${ja}</loc><lastmod>${siteConfig.lastModified}</lastmod>${priority}${alternates}</url>`,
+    `<url><loc>${en}</loc><lastmod>${siteConfig.lastModified}</lastmod>${alternates}</url>`,
   ];
 });
 fs.writeFileSync("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
