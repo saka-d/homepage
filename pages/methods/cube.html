@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gaussian cubeファイルの構造、格子、単位、電子密度・分子軌道・静電ポテンシャル、生成・演算・可視化を解説します。">
+    <link rel="canonical" href="https://saka-d.github.io/homepage/pages/methods/cube.html"><link rel="alternate" hreflang="ja" href="https://saka-d.github.io/homepage/pages/methods/cube.html"><link rel="alternate" hreflang="en" href="https://saka-d.github.io/homepage/en/pages/methods/cube.html"><link rel="alternate" hreflang="x-default" href="https://saka-d.github.io/homepage/pages/methods/cube.html">
+    <meta property="og:type" content="article"><meta property="og:locale" content="ja_JP"><meta property="og:site_name" content="坂口 大門 | Daimon Sakaguchi"><meta property="og:title" content="Cube files | 計算化学ノート"><meta property="og:description" content="電子状態計算と三次元場解析をつなぐcubeファイルを解説します。"><meta property="og:url" content="https://saka-d.github.io/homepage/pages/methods/cube.html"><meta name="twitter:card" content="summary">
+    <title>Cube files | 計算化学ノート</title><link rel="icon" href="../../assets/profile-placeholder.svg" type="image/svg+xml"><link rel="stylesheet" href="../../styles/main.css?v=20260804-5">
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header"><nav class="navbar" aria-label="Main navigation"><a class="site-title" href="../../index.html">坂口大門のページ</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle navigation"><span></span><span></span><span></span></button><ul class="nav-menu" id="primary-navigation"><li><a href="../../index.html">Home</a></li><li><a href="../about.html">About</a></li><li><a href="../research.html">Research</a></li><li><a href="index.html" class="active">Methods</a></li><li><a href="../publications.html">Publications</a></li><li><a href="../cv.html">CV</a></li><li><a href="../contact.html">Contact</a></li></ul><div class="language-switcher" aria-label="Language"><a href="cube.html" lang="ja" hreflang="ja" class="active" aria-current="page" aria-label="日本語">JA</a><a href="../../en/pages/methods/cube.html" lang="en" hreflang="en" aria-label="English">EN</a></div></nav></header>
+    <nav class="methods-switcher" aria-label="Electronic structure chapters"><div class="container methods-switcher-inner"><a href="rdkit.html">01 RDKit</a><a href="xtb.html">02 xTB</a><a href="gaussian.html">03 Gaussian</a><a href="grrm.html">04 GRRM</a><a href="pyscf.html">05 PySCF</a><a href="psi4.html">06 Psi4</a><a href="orca.html">07 ORCA</a><a href="cube.html" class="active" aria-current="page">08 Cube</a><a href="multiwfn.html">09 Multiwfn</a><a href="nciplot.html">10 NCIplot</a><a href="py3dmol.html">11 py3Dmol</a></div></nav>
+
+    <main id="main">
+        <section class="page-hero docs-hero"><div class="container"><p class="breadcrumb"><a href="index.html">計算化学ノート</a> / 08 Cube files</p><p class="eyebrow">Volumetric Data on a Three-dimensional Grid</p><h1>Cubeファイル</h1><p class="lead">原子座標と三次元格子上のスカラー値を一つのASCIIファイルに格納し、電子状態計算から実空間解析・可視化へ受け渡します。</p><dl class="tool-summary"><div><dt>位置づけ</dt><dd>三次元場の交換形式</dd></div><div><dt>主な内容</dt><dd>density、MO、ESP、spin density、RDG</dd></div><div><dt>主な接続先</dt><dd>Multiwfn、VMD、Avogadro、py3Dmol</dd></div></dl></div></section>
+
+        <section class="section-band"><div class="container docs-layout">
+            <aside class="docs-toc" aria-label="Page contents"><h2>この章の内容</h2><ol><li><a href="#overview">概要</a></li><li><a href="#structure">ファイル構造</a></li><li><a href="#grid">格子と単位</a></li><li><a href="#fields">物理量</a></li><li><a href="#generate">生成方法</a></li><li><a href="#operations">演算</a></li><li><a href="#visualize">可視化</a></li><li><a href="#validation">検証</a></li><li><a href="#references">参考資料</a></li></ol></aside>
+            <div class="docs-content">
+                <section class="docs-section" id="overview"><h2>1. 概要</h2><p>cubeは、分子構造と直方体または平行六面体のvoxel gridを記録するテキスト形式です。各格子点に一つ以上の実数を持てるため、同じ器に電子密度、軌道、静電ポテンシャルなど異なる場を保存できます。</p><div class="callout warning"><strong>拡張子だけでは物理量は分からない</strong><p><code>.cube</code>は容器の形式です。値が<math><mi>ρ</mi><mo>(</mo><mi>r</mi><mo>)</mo></math>なのか、<math><msub><mi>ψ</mi><mi>i</mi></msub><mo>(</mo><mi>r</mi><mo>)</mo></math>なのか、ESPなのかを、ファイル名・コメント行・生成コマンドと一緒に保存します。</p></div></section>
+
+                <section class="docs-section" id="structure"><h2>2. ファイル構造</h2><p>基本構造は二つのコメント行、原子数とgrid原点、三本のgrid軸、原子情報、voxel値です。軸ベクトルは必ずしもCartesian軸と平行とは限りません。</p><div class="code-sample"><div class="code-label"><span>Cube format skeleton</span><button class="copy-button" type="button" data-copy-target="cube-format">Copy</button></div><pre id="cube-format"><code>comment line 1
+comment line 2
+N_atoms   origin_x   origin_y   origin_z
+N_x       dx_x       dx_y       dx_z
+N_y       dy_x       dy_y       dy_z
+N_z       dz_x       dz_y       dz_z
+Z_1       q_1        x_1        y_1        z_1
+...
+Z_N       q_N        x_N        y_N        z_N
+value(0,0,0) value(0,0,1) ... value(Nx-1,Ny-1,Nz-1)</code></pre></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>領域</th><th>内容</th><th>確認点</th></tr></thead><tbody><tr><td>Header</td><td>コメント、原子数、原点</td><td>生成した物理量と計算条件</td></tr><tr><td>Axes</td><td>点数と一格子分のベクトル</td><td>点数、方向、spacing、単位</td></tr><tr><td>Geometry</td><td>原子番号、核電荷相当値、座標</td><td>原子順序と座標系</td></tr><tr><td>Data</td><td>通常はz indexが最も速く変化する値列</td><td>総数が<code>Nx*Ny*Nz</code>か</td></tr></tbody></table></div></section>
+
+                <section class="docs-section" id="grid"><h2>3. 格子と単位</h2><p>格子点<math><mi>r</mi><mo>(</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo>,</mo><mi>k</mi><mo>)</mo></math>は、原点<math><msub><mi>r</mi><mn>0</mn></msub></math>と三本のstep vectorから定義されます。</p><div class="equation"><math display="block"><mi>r</mi><mo>(</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo>,</mo><mi>k</mi><mo>)</mo><mo>=</mo><msub><mi>r</mi><mn>0</mn></msub><mo>+</mo><mi>i</mi><msub><mi>a</mi><mn>1</mn></msub><mo>+</mo><mi>j</mi><msub><mi>a</mi><mn>2</mn></msub><mo>+</mo><mi>k</mi><msub><mi>a</mi><mn>3</mn></msub></math></div><p>Gaussian cubeの一般的な実装では座標と軸はatomic unitで扱われますが、負の格子点数をÅ指定の印として解釈する実装もあり、reader間の差があります。生成元の仕様を確認し、単位を推測で変換しません。</p><p>格子間隔を半分にすると、一辺方向の点数は約2倍、三次元の総点数とファイルサイズは概ね8倍になります。分子から十分なmarginを確保しつつ、目的に対して必要な解像度を選びます。</p></section>
+
+                <section class="docs-section" id="fields"><h2>4. 格納する物理量</h2><div class="data-table-wrap"><table class="data-table"><thead><tr><th>場</th><th>値の性質</th><th>代表的な表示</th></tr></thead><tbody><tr><td>電子密度 <math><mi>ρ</mi><mo>(</mo><mi>r</mi><mo>)</mo></math></td><td>通常は非負。空間積分は電子数に対応</td><td>一定密度の等値面</td></tr><tr><td>分子軌道 <math><msub><mi>ψ</mi><mi>i</mi></msub></math></td><td>正負を持つ振幅。密度ではない</td><td>正負二色の等値面</td></tr><tr><td>spin density</td><td><math><msub><mi>ρ</mi><mi>α</mi></msub><mo>-</mo><msub><mi>ρ</mi><mi>β</mi></msub></math></td><td>正負二色の等値面</td></tr><tr><td>静電ポテンシャル</td><td>核と電子の寄与を含むpotential</td><td>電子密度等値面へのcolor mapping</td></tr><tr><td>RDG・NCI関連量</td><td>密度と微分から得る実空間関数</td><td>低RDG領域を<code>sign(λ2)ρ</code>で着色</td></tr></tbody></table></div><div class="callout"><strong>軌道の位相</strong><p>一つの軌道全体に<math><mo>-</mo><mn>1</mn></math>を掛けても物理状態は変わりません。異なる計算のMO cubeを差し引く前に、軌道対応と位相を揃える必要があります。</p></div></section>
+
+                <section class="docs-section" id="generate"><h2>5. 生成方法</h2><h3>Gaussian</h3><p>checkpointを<code>formchk</code>でformatted checkpointへ変換し、<code>cubegen</code>で密度や軌道をgridへ評価します。MO番号やgrid指定は使用中のGaussian版の<code>cubegen</code>ヘルプで確認します。</p><div class="code-sample"><div class="code-label"><span>Shell</span><button class="copy-button" type="button" data-copy-target="cube-gaussian">Copy</button></div><pre id="cube-gaussian"><code>formchk job.chk job.fchk
+cubegen 0 density=scf job.fchk density.cube -2 h
+cubegen 0 MO=Homo job.fchk homo.cube -2 h</code></pre></div><h3>PySCF</h3><div class="code-sample"><div class="code-label"><span>Python</span><button class="copy-button" type="button" data-copy-target="cube-pyscf">Copy</button></div><pre id="cube-pyscf"><code>from pyscf import gto, scf
+from pyscf.tools import cubegen
+
+mol = gto.M(atom="O 0 0 0; H 0 -0.757 0.587; H 0 0.757 0.587",
+            basis="def2-svp")
+mf = scf.RHF(mol).run()
+dm = mf.make_rdm1()
+
+cubegen.density(mol, "water_density.cube", dm, resolution=0.20)
+cubegen.mep(mol, "water_esp.cube", dm, resolution=0.20)
+homo = mol.nelectron // 2 - 1
+cubegen.orbital(mol, "water_homo.cube", mf.mo_coeff[:, homo],
+                resolution=0.20)</code></pre></div><h3>ORCA・Multiwfn</h3><p>ORCAは<code>%plots</code>で<code>Gaussian_Cube</code>を指定するか、計算後に<code>orca_plot job.gbw -i</code>を使います。Multiwfnはfchk、wfn/wfx、molden等を読み込み、軌道・密度・各種実空間関数をcubeへ出力できます。</p></section>
+
+                <section class="docs-section" id="operations"><h2>6. cubeの演算</h2><p>差電子密度<math><mi>Δ</mi><mi>ρ</mi></math>などは、同一grid上の値を点ごとに演算します。</p><div class="equation"><math display="block"><mi>Δ</mi><mi>ρ</mi><mo>(</mo><mi>r</mi><mo>)</mo><mo>=</mo><msub><mi>ρ</mi><mrow><mi>AB</mi></mrow></msub><mo>(</mo><mi>r</mi><mo>)</mo><mo>-</mo><msub><mi>ρ</mi><mi>A</mi></msub><mo>(</mo><mi>r</mi><mo>)</mo><mo>-</mo><msub><mi>ρ</mi><mi>B</mi></msub><mo>(</mo><mi>r</mi><mo>)</mo></math></div><p>演算前に、原点、三本の軸ベクトル、各軸点数、原子配置、単位、電子密度の定義を一致させます。fragmentを別々に自動grid生成すると範囲が変わるため、複合体と同一の原点・extent・resolutionを明示します。</p><div class="callout warning"><strong>補間は最後の手段</strong><p>異なるgridを補間して揃えると数値誤差と境界効果が入ります。可能なら同一gridへ再出力し、補間した場合は方法と誤差評価を記録します。</p></div></section>
+
+                <section class="docs-section" id="visualize"><h2>7. 可視化</h2><ul><li><strong>MO・spin density:</strong> 正負を同じ絶対isovalueで二色表示する。</li><li><strong>ESP:</strong> ESP自体の等値面ではなく、一定電子密度面へ値をmappingする目的を区別する。</li><li><strong>NCI:</strong> 形状を定めるcubeと、表面色を定めるcubeを対応させる。</li><li><strong>比較図:</strong> 分子間でisovalue、color range、視点を固定する。</li></ul><p>Web・Notebookでは<a href="py3dmol.html">py3Dmol</a>、実空間解析では<a href="multiwfn.html">Multiwfn</a>、NCI専用処理では<a href="nciplot.html">NCIplot</a>へ進みます。</p></section>
+
+                <section class="docs-section" id="validation"><h2>8. 数値検証</h2><ol><li>Headerの物理量、計算method、orbital番号を確認する。</li><li>格子点数とdata値数が一致するか確認する。</li><li>原子がgrid境界に近すぎないか確認する。</li><li>電子密度ならvoxel volumeを掛けた数値積分を電子数と比較する。</li><li>差分なら各入力cubeの原点・axis・shapeを機械的に比較する。</li><li>可視化画像とともに元cube、生成コマンド、isovalueを保存する。</li></ol></section>
+
+                <section class="docs-section" id="references"><h2>9. 参考資料</h2><ul class="reference-list"><li><a href="https://pyscf.org/pyscf_api_docs/pyscf.tools.html" target="_blank" rel="noopener noreferrer">PySCF tools.cubegen API</a></li><li><a href="https://www.faccts.de/docs/orca/6.1/manual/contents/utilitiesvisualization/plots.html" target="_blank" rel="noopener noreferrer">ORCA 6.1 Manual: Orbital and Density Plots</a></li><li><a href="https://h5cube-spec.readthedocs.io/en/latest/cubeformat.html" target="_blank" rel="noopener noreferrer">h5cube: Gaussian CUBE File Format specification</a></li><li><a href="https://gaussian.com/wp-content/uploads/dl/gv6.pdf" target="_blank" rel="noopener noreferrer">GaussView 6 Help: Generating and Manipulating Cubes</a></li></ul><p>最終更新: <time datetime="2026-08-04">2026年8月4日</time></p></section>
+            </div>
+        </div></section>
+    </main>
+    <footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer><script src="../../scripts/main.js?v=20260804-2"></script>
+</body>
+</html>

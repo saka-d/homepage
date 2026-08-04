@@ -3,6 +3,11 @@
   "description": "Personal academic homepage for Sakaguchi Daimon on GitHub Pages.",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "i18n:markup": "node scripts/add_i18n_markup.mjs",
+    "i18n:generate": "node scripts/generate_english_site.mjs",
+    "i18n:check": "node scripts/check_i18n.mjs"
+  },
   "author": "Sakaguchi Daimon",
   "license": "MIT",
   "repository": {

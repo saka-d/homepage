@@ -1,0 +1,7 @@
+1
+water-dimer.wfn
+
+OUTPUT 3
+CUTOFFS 0.20 2.00
+CUTPLOT 0.05
+ISORDG 0.50

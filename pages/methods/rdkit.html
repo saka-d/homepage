@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="RDKitによるSMILES、Mol object、2D描画、ETKDG配座生成、MMFF/UFF最適化、RMSD計算の実践的解説。">
+    <link rel="canonical" href="https://saka-d.github.io/homepage/pages/methods/rdkit.html"><link rel="alternate" hreflang="ja" href="https://saka-d.github.io/homepage/pages/methods/rdkit.html"><link rel="alternate" hreflang="en" href="https://saka-d.github.io/homepage/en/pages/methods/rdkit.html"><link rel="alternate" hreflang="x-default" href="https://saka-d.github.io/homepage/pages/methods/rdkit.html">
+    <meta property="og:type" content="article"><meta property="og:locale" content="ja_JP"><meta property="og:site_name" content="坂口 大門 | Daimon Sakaguchi">
+    <meta property="og:title" content="RDKit | 計算化学ノート"><meta property="og:description" content="分子表現から配座生成・力場最適化・RMSDまでを項目別に解説します。">
+    <meta property="og:url" content="https://saka-d.github.io/homepage/pages/methods/rdkit.html"><meta name="twitter:card" content="summary">
+    <title>RDKit | 計算化学ノート</title>
+    <link rel="icon" href="../../assets/profile-placeholder.svg" type="image/svg+xml"><link rel="stylesheet" href="../../styles/main.css?v=20260804-5">
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header"><nav class="navbar" aria-label="Main navigation"><a class="site-title" href="../../index.html">坂口大門のページ</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle navigation"><span></span><span></span><span></span></button><ul class="nav-menu" id="primary-navigation"><li><a href="../../index.html">Home</a></li><li><a href="../about.html">About</a></li><li><a href="../research.html">Research</a></li><li><a href="index.html" class="active">Methods</a></li><li><a href="../publications.html">Publications</a></li><li><a href="../cv.html">CV</a></li><li><a href="../contact.html">Contact</a></li></ul><div class="language-switcher" aria-label="Language"><a href="rdkit.html" lang="ja" hreflang="ja" class="active" aria-current="page" aria-label="日本語">JA</a><a href="../../en/pages/methods/rdkit.html" lang="en" hreflang="en" aria-label="English">EN</a></div></nav></header>
+    <nav class="methods-switcher" aria-label="Electronic structure chapters"><div class="container methods-switcher-inner"><a href="rdkit.html" class="active" aria-current="page">01 RDKit</a><a href="xtb.html">02 xTB</a><a href="gaussian.html">03 Gaussian</a><a href="grrm.html">04 GRRM</a><a href="pyscf.html">05 PySCF</a><a href="psi4.html">06 Psi4</a><a href="orca.html">07 ORCA</a><a href="cube.html">08 Cube</a><a href="multiwfn.html">09 Multiwfn</a><a href="nciplot.html">10 NCIplot</a><a href="py3dmol.html">11 py3Dmol</a></div></nav>
+
+    <main id="main">
+        <section class="page-hero docs-hero"><div class="container"><p class="breadcrumb"><a href="index.html">計算化学ノート</a> / 01 RDKit</p><p class="eyebrow">Molecular Representation and Classical Preparation</p><h1>RDKit</h1><p class="lead">SMILESを化学構造として解釈し、二次元描画、三次元配座生成、古典力場最適化、構造比較へ進むための基礎を扱います。</p><dl class="tool-summary"><div><dt>位置づけ</dt><dd>Cheminformatics・古典力場前処理</dd></div><div><dt>主な入力</dt><dd>SMILES、SMARTS、SDF、MOL</dd></div><div><dt>主な出力</dt><dd>Mol object、2D/3D座標、SDF、記述子</dd></div></dl></div></section>
+
+        <section class="section-band"><div class="container docs-layout">
+            <aside class="docs-toc" aria-label="Page contents"><h2>この章の内容</h2><ol><li><a href="#overview">概要</a></li><li><a href="#smiles">SMILES</a></li><li><a href="#mol">Mol object</a></li><li><a href="#draw">2D描画</a></li><li><a href="#etkdg">ETKDG</a></li><li><a href="#force-fields">MMFFとUFF</a></li><li><a href="#rmsd">RMSD</a></li><li><a href="#workflow">一連の実行例</a></li><li><a href="#references">参考文献</a></li></ol></aside>
+            <div class="docs-content">
+                <section class="docs-section" id="overview"><h2>1. 概要</h2><p>RDKitの中心は、原子、結合、電荷、立体化学、複数のconformerを保持する分子オブジェクトです。量子化学計算のように電子波動関数を解くのではなく、結合表と経験的規則・力場を使って分子を処理します。</p><p>典型的な流れは <span class="formula-inline">SMILES → Mol → AddHs → ETKDG → MMFF/UFF → clustering → SDF</span> です。構造生成と量子化学計算の境界を意識し、RDKitの力場順位を最終的な電子エネルギー順位と同一視しません。</p><p>InChIKey、fingerprint、Gasteiger電荷、SMARTS検索、構造描画は、別トラックの<a href="cheminformatics.html">RDKitケモインフォマティクス編</a>にまとめています。</p></section>
+
+                <section class="docs-section" id="smiles"><h2>2. SMILES</h2><p>SMILESは原子と結合のグラフを文字列で表します。分岐は括弧、環閉鎖は数字、芳香族原子は小文字、形式電荷や同位体は角括弧で記述します。</p><div class="data-table-wrap"><table class="data-table"><thead><tr><th>例</th><th>意味</th></tr></thead><tbody><tr><td><code>CC(=O)c1ccccc1</code></td><td>アセトフェノン</td></tr><tr><td><code>C[C@H](O)C(=O)O</code></td><td>立体中心を指定した乳酸</td></tr><tr><td><code>[NH4+].[Cl-]</code></td><td>非結合fragmentを含む塩</td></tr></tbody></table></div><div class="code-sample"><div class="code-label"><span>Python</span><button class="copy-button" type="button" data-copy-target="rdkit-smiles-code">Copy</button></div><pre id="rdkit-smiles-code"><code>from rdkit import Chem
+
+smiles = "C[C@H](O)C(=O)O"
+mol = Chem.MolFromSmiles(smiles)
+if mol is None:
+    raise ValueError("SMILES parsing failed")
+
+print(Chem.MolToSmiles(mol, canonical=True, isomericSmiles=True))
+print(Chem.FindMolChiralCenters(mol, includeUnassigned=True))</code></pre></div><div class="callout warning"><strong>SMILESだけでは不足する情報</strong><p>三次元配座、溶媒、温度、配座分布はSMILESに含まれません。未指定の立体中心、互変異性体、プロトン化状態、塩の扱いは解析前に決めます。</p></div></section>
+
+                <section class="docs-section" id="mol"><h2>3. Mol objectの生成</h2><p><code>MolFromSmiles</code>は通常sanitizationを行い、原子価、芳香族性、共役、ring情報を設定します。編集には<code>RWMol</code>、複製には<code>Chem.Mol</code>を使います。</p><div class="code-sample"><div class="code-label"><span>Python</span><button class="copy-button" type="button" data-copy-target="rdkit-mol-code">Copy</button></div><pre id="rdkit-mol-code"><code>mol = Chem.MolFromSmiles("CC(=O)c1ccccc1")
+mol_h = Chem.AddHs(mol)
+
+mol_h.SetProp("molecule_id", "acetophenone")
+print(mol_h.GetNumAtoms())
+print(mol_h.GetNumConformers())</code></pre></div><p>implicit hydrogenとexplicit hydrogenを混同すると、原子数、力場、RMSD、量子化学入力が変わります。三次元生成前には通常<code>AddHs</code>を行い、比較時には水素を含めるかを明記します。</p></section>
+
+                <section class="docs-section" id="draw"><h2>4. 二次元構造の描画</h2><p>描画は化学構造の検査でもあります。原子ラベル、立体結合、形式電荷、芳香環、atom indexを確認します。</p><div class="code-sample"><div class="code-label"><span>Python</span><button class="copy-button" type="button" data-copy-target="rdkit-draw-code">Copy</button></div><pre id="rdkit-draw-code"><code>from rdkit.Chem import rdDepictor
+from rdkit.Chem.Draw import rdMolDraw2D
+
+rdDepictor.Compute2DCoords(mol)
+drawer = rdMolDraw2D.MolDraw2DSVG(500, 320)
+options = drawer.drawOptions()
+options.addAtomIndices = True
+drawer.DrawMolecule(mol)
+drawer.FinishDrawing()
+open("molecule.svg", "w").write(drawer.GetDrawingText())</code></pre></div><p>論文用図では、描画サイズ、bond width、font、highlight規則を固定するとデータセット間で比較しやすくなります。</p></section>
+
+                <section class="docs-section" id="etkdg"><h2>5. ETKDGによる配座生成</h2><p>distance geometryでは原子間距離の上下限から三次元座標を埋め込みます。ETKDGは実験的ねじれ角選好と基本化学知識を加え、化学的に妥当な配座を得やすくした方法です。</p><ol class="workflow-list"><li><strong>水素を明示化</strong><br>立体配置と力場原子型を完全にします。</li><li><strong>複数配座を生成</strong><br>乱数seedを固定し、回転可能結合数に応じて試行数を増やします。</li><li><strong>RMSD pruning</strong><br>近い候補を生成中に除きます。</li><li><strong>力場で緩和</strong><br>埋め込み時の歪みをMMFFまたはUFFで下げます。</li></ol><div class="code-sample"><div class="code-label"><span>Python</span><button class="copy-button" type="button" data-copy-target="rdkit-etkdg-code">Copy</button></div><pre id="rdkit-etkdg-code"><code>from rdkit.Chem import AllChem
+
+params = AllChem.ETKDGv3()
+params.randomSeed = 20260804
+params.pruneRmsThresh = 0.35
+params.useSmallRingTorsions = True
+
+conf_ids = list(AllChem.EmbedMultipleConfs(
+    mol_h, numConfs=100, params=params
+))
+if not conf_ids:
+    raise RuntimeError("No conformer was generated")</code></pre></div><p>一つのseedで得た配座数だけを探索の十分性としません。seed、<code>numConfs</code>、pruning閾値を変え、低エネルギー集合と主要torsion分布が安定するかを調べます。</p></section>
+
+                <section class="docs-section" id="force-fields"><h2>6. MMFFとUFFによる構造最適化</h2><p>力場エネルギーは結合伸縮、角度変角、ねじれ、van der Waals、静電相互作用などの経験的項の和です。</p><div class="equation" aria-label="Molecular mechanics energy"><math display="block"><mi>E</mi><mo>=</mo><msub><mi>E</mi><mi>bond</mi></msub><mo>+</mo><msub><mi>E</mi><mi>angle</mi></msub><mo>+</mo><msub><mi>E</mi><mi>torsion</mi></msub><mo>+</mo><msub><mi>E</mi><mi>vdW</mi></msub><mo>+</mo><msub><mi>E</mi><mi>electrostatic</mi></msub></math></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>力場</th><th>特徴</th><th>確認</th></tr></thead><tbody><tr><td>MMFF94</td><td>有機・生体関連小分子向けに広くparameterize</td><td><code>MMFFHasAllMoleculeParams</code></td></tr><tr><td>MMFF94s</td><td>構造最適化用途を意識したvariant</td><td><code>mmffVariant="MMFF94s"</code></td></tr><tr><td>UFF</td><td>元素範囲が広いuniversal force field</td><td>特殊な結合・金属系の妥当性を個別確認</td></tr></tbody></table></div><div class="code-sample"><div class="code-label"><span>Python</span><button class="copy-button" type="button" data-copy-target="rdkit-mmff-code">Copy</button></div><pre id="rdkit-mmff-code"><code>if not AllChem.MMFFHasAllMoleculeParams(mol_h):
+    raise RuntimeError("MMFF parameters are unavailable")
+
+results = AllChem.MMFFOptimizeMoleculeConfs(
+    mol_h, mmffVariant="MMFF94", maxIters=1000
+)
+# result = (status, energy); status == 0 means converged
+energies = {cid: results[i][1] for i, cid in enumerate(conf_ids)}</code></pre></div></section>
+
+                <section class="docs-section" id="rmsd"><h2>7. RMSD、alignment、clustering</h2><p>対応原子を持つ二構造を回転・並進で重ねた後のRMSDは次式です。</p><div class="equation" aria-label="Root mean square deviation"><math display="block"><mi>RMSD</mi><mo>=</mo><msqrt><mfrac><mn>1</mn><mi>N</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></munderover><msup><mrow><mo>|</mo><msub><mi mathvariant="bold">r</mi><mi>i</mi></msub><mo>−</mo><msub><mi mathvariant="bold">r</mi><mi>i</mi></msub><mo>'</mo><mo>|</mo></mrow><mn>2</mn></msup></msqrt></math></div><div class="code-sample"><div class="code-label"><span>Python</span><button class="copy-button" type="button" data-copy-target="rdkit-rms-code">Copy</button></div><pre id="rdkit-rms-code"><code>from rdkit.Chem import rdMolAlign
+
+rms = rdMolAlign.GetBestRMS(
+    mol_h, mol_h, prbId=conf_ids[0], refId=conf_ids[1]
+)
+print(f"Best symmetry-aware RMSD: {rms:.3f} angstrom")</code></pre></div><p><code>AlignMol</code>は指定対応でalignmentを行い、<code>GetBestRMS</code>は対称な原子対応を探索します。重原子のみか全原子か、鏡像を許すか、対称性をどう扱うかで値が変わります。配座clusteringではRMSD行列とcutoffを保存します。</p></section>
+
+                <section class="docs-section" id="workflow"><h2>8. 一連の実行例</h2><p>アセトフェノンの配座生成、MMFF94最適化、energy順位、SDF出力をまとめたスクリプトを用意しています。</p><p><a class="btn btn-secondary" href="../../assets/examples/rdkit/rdkit_conformers.py" download>Python例をダウンロード</a></p><ul class="detail-list"><li><strong>入力検証</strong><span>SMILES、立体中心、formal charge、fragment数を記録します。</span></li><li><strong>生成検証</strong><span>要求数、成功数、seed、ETKDG版、pruning閾値を記録します。</span></li><li><strong>最適化検証</strong><span>各conformerのstatusを確認し、未収束構造を識別します。</span></li><li><strong>次段階</strong><span>RMSD clusterごとの代表をxTBまたはDFTで再最適化します。</span></li></ul></section>
+
+                <section class="docs-section" id="references"><h2>9. 参考文献・公式資料</h2><ol class="reference-list"><li>RDKit, <a href="https://www.rdkit.org/docs/" target="_blank" rel="noopener noreferrer">Official documentation</a> / <a href="https://www.rdkit.org/docs/RDKit_Book.html" target="_blank" rel="noopener noreferrer">The RDKit Book</a>.</li><li>S. Riniker and G. A. Landrum, “Better Informed Distance Geometry,” <em>J. Chem. Inf. Model.</em> 2015. <a href="https://doi.org/10.1021/acs.jcim.5b00654" target="_blank" rel="noopener noreferrer">DOI</a></li><li>T. A. Halgren, “Merck molecular force field. I,” <em>J. Comput. Chem.</em> 1996. <a href="https://doi.org/10.1002/(SICI)1096-987X(199604)17:5%2F6%3C490::AID-JCC1%3E3.0.CO;2-P" target="_blank" rel="noopener noreferrer">DOI</a></li><li>A. K. Rappé et al., “UFF, a full periodic table force field,” <em>J. Am. Chem. Soc.</em> 1992. <a href="https://doi.org/10.1021/ja00051a040" target="_blank" rel="noopener noreferrer">DOI</a></li></ol><p><a class="text-link" href="xtb.html">次章: xTB</a></p></section>
+            </div>
+        </div></section>
+    </main>
+    <footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer><script src="../../scripts/main.js?v=20260804-2"></script>
+</body></html>

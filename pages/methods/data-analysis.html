@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="化学データ解析のためのNumPy行列計算、scikit-learnのRidge・Lasso・Elastic Net、交差検証、PCA、SHAPを解説します。"><link rel="canonical" href="https://saka-d.github.io/homepage/pages/methods/data-analysis.html"><link rel="alternate" hreflang="ja" href="https://saka-d.github.io/homepage/pages/methods/data-analysis.html"><link rel="alternate" hreflang="en" href="https://saka-d.github.io/homepage/en/pages/methods/data-analysis.html"><link rel="alternate" hreflang="x-default" href="https://saka-d.github.io/homepage/pages/methods/data-analysis.html"><meta property="og:type" content="article"><meta property="og:locale" content="ja_JP"><meta property="og:site_name" content="坂口 大門 | Daimon Sakaguchi"><meta property="og:title" content="数値計算・機械学習 | 計算化学ノート"><meta property="og:description" content="特徴量行列から正則化回帰、PCA、SHAPへ進む化学データ解析。"><meta property="og:url" content="https://saka-d.github.io/homepage/pages/methods/data-analysis.html"><meta name="twitter:card" content="summary"><title>数値計算・機械学習 | 計算化学ノート</title><link rel="icon" href="../../assets/profile-placeholder.svg" type="image/svg+xml"><link rel="stylesheet" href="../../styles/main.css?v=20260804-5">
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a><header class="site-header"><nav class="navbar" aria-label="Main navigation"><a class="site-title" href="../../index.html">坂口大門のページ</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle navigation"><span></span><span></span><span></span></button><ul class="nav-menu" id="primary-navigation"><li><a href="../../index.html">Home</a></li><li><a href="../about.html">About</a></li><li><a href="../research.html">Research</a></li><li><a href="index.html" class="active">Methods</a></li><li><a href="../publications.html">Publications</a></li><li><a href="../cv.html">CV</a></li><li><a href="../contact.html">Contact</a></li></ul><div class="language-switcher" aria-label="Language"><a href="data-analysis.html" lang="ja" hreflang="ja" class="active" aria-current="page" aria-label="日本語">JA</a><a href="../../en/pages/methods/data-analysis.html" lang="en" hreflang="en" aria-label="English">EN</a></div></nav></header>
+    <nav class="track-switcher" aria-label="Chemical data chapters"><div class="container track-switcher-inner"><a href="cheminformatics.html">B1 RDKit cheminformatics</a><a href="data-analysis.html" class="active" aria-current="page">B2 Data analysis</a><a href="steric-descriptors.html">B3 Steric descriptors</a></div></nav>
+    <main id="main">
+        <section class="page-hero docs-hero"><div class="container"><p class="breadcrumb"><a href="index.html">計算化学ノート</a> / B2 Data analysis</p><p class="eyebrow">Matrices, Regularized Regression and Interpretation</p><h1>数値計算・機械学習</h1><p class="lead">分子・反応を行、記述子を列とする行列を定義し、再現可能な前処理、正則化回帰、次元削減、モデル解釈へ進みます。</p><dl class="tool-summary"><div><dt>数値基盤</dt><dd>NumPy・線形代数</dd></div><div><dt>モデル</dt><dd>Ridge・Lasso・Elastic Net・PCA</dd></div><div><dt>解釈</dt><dd>係数、loading、SHAP</dd></div></dl></div></section>
+        <section class="section-band"><div class="container docs-layout"><aside class="docs-toc" aria-label="Page contents"><h2>この章の内容</h2><ol><li><a href="#overview">概要</a></li><li><a href="#arrays">NumPy配列</a></li><li><a href="#linalg">行列計算</a></li><li><a href="#regression">正則化回帰</a></li><li><a href="#validation">分割と検証</a></li><li><a href="#pca">PCA</a></li><li><a href="#shap">SHAP</a></li><li><a href="#workflow">実践workflow</a></li><li><a href="#references">参考資料</a></li></ol></aside>
+        <div class="docs-content">
+            <section class="docs-section" id="overview"><h2>1. 化学データを行列にする</h2><p><math><mi>n</mi></math>個の分子・反応と<math><mi>p</mi></math>個の特徴量を、design matrix <math><mi>X</mi><mo>∈</mo><msup><mi>R</mi><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msup></math>に並べます。目的変数は<math><mi>y</mi><mo>∈</mo><msup><mi>R</mi><mi>n</mi></msup></math>です。</p><div class="equation"><math display="block"><mi>X</mi><mo>=</mo><mfenced open="[" close="]"><mtable><mtr><mtd><msub><mi>x</mi><mn>11</mn></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>x</mi><mrow><mn>1</mn><mi>p</mi></mrow></msub></mtd></mtr><mtr><mtd><mo>⋮</mo></mtd><mtd><mo>⋱</mo></mtd><mtd><mo>⋮</mo></mtd></mtr><mtr><mtd><msub><mi>x</mi><mrow><mi>n</mi><mn>1</mn></mrow></msub></mtd><mtd><mo>⋯</mo></mtd><mtd><msub><mi>x</mi><mrow><mi>n</mi><mi>p</mi></mrow></msub></mtd></mtr></mtable></mfenced></math></div><p>列にはfingerprint bit、物性記述子、Sterimol、%Vbur、cubeから抽出したfield特徴量などが入ります。定義・単位・欠損処理をmetadataとして保存します。</p></section>
+
+            <section class="docs-section" id="arrays"><h2>2. NumPy配列の基礎</h2><p>線形代数でも<code>numpy.matrix</code>ではなく通常の<code>ndarray</code>を使います。<code>*</code>は要素積、<code>@</code>は行列積です。</p><div class="code-sample"><div class="code-label"><span>Python</span><button class="copy-button" type="button" data-copy-target="numpy-array">Copy</button></div><pre id="numpy-array"><code>import numpy as np
+
+X = np.array([
+    [2.1, 0.32, 71.4],
+    [2.5, 0.41, 74.8],
+    [3.0, 0.55, 80.2],
+], dtype=float)
+y = np.array([1.2, 1.8, 2.5])
+
+print(X.shape)       # (n_samples, n_features)
+print(X[:, 0])       # first feature
+print(X.T @ X)       # Gram matrix
+print(X.mean(axis=0))
+print(X.std(axis=0, ddof=1))</code></pre></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>処理</th><th>NumPy</th><th>意味</th></tr></thead><tbody><tr><td>内積・行列積</td><td><code>a @ b</code></td><td>shapeの内側の次元を縮約</td></tr><tr><td>連立方程式</td><td><code>np.linalg.solve(A, b)</code></td><td><math><mi>A</mi><mi>x</mi><mo>=</mo><mi>b</mi></math>を解く</td></tr><tr><td>最小二乗</td><td><code>np.linalg.lstsq(X, y)</code></td><td>residual normを最小化</td></tr><tr><td>固有値分解</td><td><code>np.linalg.eigh(C)</code></td><td>対称行列向け</td></tr><tr><td>特異値分解</td><td><code>np.linalg.svd(X)</code></td><td>rank・主成分・conditionを調べる</td></tr></tbody></table></div></section>
+
+            <section class="docs-section" id="linalg"><h2>3. 最小二乗と行列計算</h2><div class="equation"><math display="block"><mover><mi>β</mi><mo>^</mo></mover><mo>=</mo><munder><mo>arg min</mo><mi>β</mi></munder><msubsup><mrow><mo>∥</mo><mi>y</mi><mo>-</mo><mi>X</mi><mi>β</mi><mo>∥</mo></mrow><mn>2</mn><mn>2</mn></msubsup></math></div><p>形式的なnormal equationは<math><mover><mi>β</mi><mo>^</mo></mover><mo>=</mo><msup><mrow><mo>(</mo><msup><mi>X</mi><mi>T</mi></msup><mi>X</mi><mo>)</mo></mrow><mrow><mo>-</mo><mn>1</mn></mrow></msup><msup><mi>X</mi><mi>T</mi></msup><mi>y</mi></math>ですが、逆行列を明示的に作ると数値誤差が増えます。<code>lstsq</code>、QR、SVD、scikit-learn estimatorを使います。</p><div class="code-sample"><div class="code-label"><span>Python</span><button class="copy-button" type="button" data-copy-target="numpy-lstsq">Copy</button></div><pre id="numpy-lstsq"><code>beta, residuals, rank, singular_values = np.linalg.lstsq(
+    X, y, rcond=None
+)
+condition_number = singular_values.max() / singular_values.min()
+print(beta, rank, condition_number)</code></pre></div><p>非常に大きいcondition numberは、特徴量のscale差や多重共線性を示します。化学記述子は互いに強く相関しやすいため、標準化と正則化を検討します。</p></section>
+
+            <section class="docs-section" id="regression"><h2>4. 正則化回帰</h2><h3>Ridge</h3><div class="equation"><math display="block"><munder><mo>min</mo><mi>β</mi></munder><mfrac><mn>1</mn><mrow><mn>2</mn><mi>n</mi></mrow></mfrac><msubsup><mrow><mo>∥</mo><mi>y</mi><mo>-</mo><mi>X</mi><mi>β</mi><mo>∥</mo></mrow><mn>2</mn><mn>2</mn></msubsup><mo>+</mo><mi>α</mi><msubsup><mrow><mo>∥</mo><mi>β</mi><mo>∥</mo></mrow><mn>2</mn><mn>2</mn></msubsup></math></div><p>L2 penaltyで係数を連続的に縮小します。相関した記述子を含む場合にも比較的安定ですが、通常は係数を完全な0にはしません。</p><h3>Lasso・Elastic Net</h3><div class="equation"><math display="block"><munder><mo>min</mo><mi>β</mi></munder><mfrac><mn>1</mn><mrow><mn>2</mn><mi>n</mi></mrow></mfrac><msubsup><mrow><mo>∥</mo><mi>y</mi><mo>-</mo><mi>X</mi><mi>β</mi><mo>∥</mo></mrow><mn>2</mn><mn>2</mn></msubsup><mo>+</mo><mi>α</mi><mi>ρ</mi><msub><mrow><mo>∥</mo><mi>β</mi><mo>∥</mo></mrow><mn>1</mn></msub><mo>+</mo><mfrac><mrow><mi>α</mi><mo>(</mo><mn>1</mn><mo>-</mo><mi>ρ</mi><mo>)</mo></mrow><mn>2</mn></mfrac><msubsup><mrow><mo>∥</mo><mi>β</mi><mo>∥</mo></mrow><mn>2</mn><mn>2</mn></msubsup></math></div><p><math><mi>ρ</mi><mo>=</mo><mn>1</mn></math>がLasso、<math><mn>0</mn><mo>&lt;</mo><mi>ρ</mi><mo>&lt;</mo><mn>1</mn></math>がElastic Netです。Lassoはsparseな係数を作れますが、強く相関した特徴群から一つを不安定に選ぶ場合があります。</p><div class="code-sample"><div class="code-label"><span>scikit-learn</span><button class="copy-button" type="button" data-copy-target="sklearn-enet">Copy</button></div><pre id="sklearn-enet"><code>from sklearn.linear_model import ElasticNetCV
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+
+model = make_pipeline(
+    StandardScaler(),
+    ElasticNetCV(
+        l1_ratio=[0.1, 0.5, 0.9, 1.0],
+        alphas=100,
+        cv=5,
+        max_iter=20000,
+    ),
+)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)</code></pre></div></section>
+
+            <section class="docs-section" id="validation"><h2>5. 分割・前処理・評価</h2><p><code>Pipeline</code>内でstandardizationとfeature selectionをfitすると、各cross-validation foldのtraining部分だけから変換parameterを学習できます。</p><div class="data-table-wrap"><table class="data-table"><thead><tr><th>指標</th><th>式・意味</th><th>注意</th></tr></thead><tbody><tr><td>MAE</td><td>絶対誤差の平均</td><td>outlierの影響がRMSEより小さい</td></tr><tr><td>RMSE</td><td>二乗誤差平均の平方根</td><td>大誤差を強くpenalize</td></tr><tr><td><math><msup><mi>R</mi><mn>2</mn></msup></math></td><td>平均予測からの改善度</td><td>test setでは負にもなり得る</td></tr></tbody></table></div><div class="callout warning"><strong>反応系列をまたぐ検証</strong><p>random splitは同一scaffoldや類似触媒をtrain/testへ分散し、性能を過大評価する場合があります。scaffold、基質系列、触媒系列、文献sourceなど、実際の外挿課題に対応するgroup splitを併記します。</p></div></section>
+
+            <section class="docs-section" id="pca"><h2>6. PCA</h2><p>PCAはcentered matrixを、分散を最大化する直交方向へ射影します。scikit-learnの<code>PCA</code>はcenterしますがscaleは揃えないため、単位の異なる記述子では通常<code>StandardScaler</code>を先に適用します。</p><div class="equation"><math display="block"><msub><mi>t</mi><mi>k</mi></msub><mo>=</mo><mi>X</mi><msub><mi>p</mi><mi>k</mi></msub><mspace width="1.5em"/><mi>with</mi><mspace width="0.5em"/><msub><mi>p</mi><mi>k</mi></msub><mo>=</mo><munder><mo>arg max</mo><mrow><mo>∥</mo><mi>p</mi><mo>∥</mo><mo>=</mo><mn>1</mn></mrow></munder><mi>Var</mi><mo>(</mo><mi>X</mi><mi>p</mi><mo>)</mo></math></div><div class="code-sample"><div class="code-label"><span>scikit-learn</span><button class="copy-button" type="button" data-copy-target="sklearn-pca">Copy</button></div><pre id="sklearn-pca"><code>from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+X_scaled = StandardScaler().fit_transform(X)
+pca = PCA(n_components=0.95)
+scores = pca.fit_transform(X_scaled)
+loadings = pca.components_.T
+
+print(pca.explained_variance_ratio_)
+print(scores.shape, loadings.shape)</code></pre></div><p>scoreはsampleの位置、loadingは元特徴量が主成分へ寄与する方向です。符号は主成分全体で反転可能なので、符号そのものではなく相対方向を解釈します。PCAは目的変数を使わない教師なし解析です。</p></section>
+
+            <section class="docs-section" id="shap"><h2>7. SHAPによるモデル解釈</h2><p>SHAPは予測値をbaselineと各特徴量の寄与へ加法分解します。</p><div class="equation"><math display="block"><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><msub><mi>ϕ</mi><mn>0</mn></msub><mo>+</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>p</mi></munderover><msub><mi>ϕ</mi><mi>j</mi></msub></math></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>図</th><th>読む内容</th></tr></thead><tbody><tr><td>bar / beeswarm</td><td>dataset全体での寄与の大きさと方向</td></tr><tr><td>waterfall</td><td>一つのsampleがbaselineから予測値へ移る内訳</td></tr><tr><td>scatter</td><td>特徴量値とSHAP値の関係、非線形性・interactionの候補</td></tr></tbody></table></div><div class="code-sample"><div class="code-label"><span>SHAP</span><button class="copy-button" type="button" data-copy-target="shap-code">Copy</button></div><pre id="shap-code"><code>import shap
+
+explainer = shap.Explainer(fitted_model, X_background)
+shap_values = explainer(X_test)
+
+shap.plots.beeswarm(shap_values)
+shap.plots.waterfall(shap_values[0])
+shap.plots.scatter(shap_values[:, "B5"])</code></pre></div><div class="callout warning"><strong>寄与は因果効果ではない</strong><p>SHAPはmodelとbackground distributionに対する説明です。相関した特徴量間で寄与の配分が変わり、未測定交絡も残ります。「特徴量を操作すれば選択性が変わる」という因果主張には追加の仮定・実験が必要です。</p></div></section>
+
+            <section class="docs-section" id="workflow"><h2>8. 実践workflow</h2><ol><li>解析単位と外挿したいchemical spaceを定義する。</li><li>train/testまたはgroup splitを最初に固定する。</li><li>欠損補完・標準化・特徴量選択をPipelineへ入れる。</li><li>inner CVでhyperparameterを選び、outer testで性能を評価する。</li><li>baseline、MAE/RMSE、prediction plot、applicability domainを確認する。</li><li>係数、PCA loading、SHAPの安定性をbootstrapや分割変更で調べる。</li><li>data、code、random seed、library version、feature定義を保存する。</li></ol><p><a href="cheminformatics.html">RDKit特徴量</a>と<a href="steric-descriptors.html">立体・場記述子</a>を同じ表へ統合するときも、各列の由来と配座集約法を追跡できるようにします。</p></section>
+
+            <section class="docs-section" id="references"><h2>9. 参考資料</h2><ul class="reference-list"><li><a href="https://numpy.org/doc/stable/user/index.html" target="_blank" rel="noopener noreferrer">NumPy User Guide</a></li><li><a href="https://scikit-learn.org/stable/modules/linear_model.html" target="_blank" rel="noopener noreferrer">scikit-learn: Linear Models</a></li><li><a href="https://scikit-learn.org/stable/modules/decomposition.html" target="_blank" rel="noopener noreferrer">scikit-learn: PCA and matrix decomposition</a></li><li><a href="https://scikit-learn.org/stable/getting_started.html" target="_blank" rel="noopener noreferrer">scikit-learn: Pipeline and data leakage</a></li><li><a href="https://shap.readthedocs.io/en/stable/api.html" target="_blank" rel="noopener noreferrer">SHAP API and plot reference</a></li><li><a href="https://shap.readthedocs.io/en/latest/example_notebooks/overviews/Be%20careful%20when%20interpreting%20predictive%20models%20in%20search%20of%20causal%20insights.html" target="_blank" rel="noopener noreferrer">SHAP: predictive explanation and causal interpretation</a></li></ul><p>最終更新: <time datetime="2026-08-04">2026年8月4日</time></p></section>
+        </div></div></section>
+    </main><footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer><script src="../../scripts/main.js?v=20260804-2"></script>
+</body></html>

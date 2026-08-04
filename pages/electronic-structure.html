@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="電子状態計算の基礎。Schrödinger方程式、電子密度、Hartree–Fock法、密度汎関数理論、基底関数、構造最適化と振動数解析を解説します。">
+    <link rel="canonical" href="https://saka-d.github.io/homepage/pages/electronic-structure.html"><link rel="alternate" hreflang="ja" href="https://saka-d.github.io/homepage/pages/electronic-structure.html"><link rel="alternate" hreflang="en" href="https://saka-d.github.io/homepage/en/pages/electronic-structure.html"><link rel="alternate" hreflang="x-default" href="https://saka-d.github.io/homepage/pages/electronic-structure.html">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="ja_JP">
+    <meta property="og:site_name" content="坂口 大門 | Daimon Sakaguchi">
+    <meta property="og:title" content="電子状態計算の基礎 | 計算化学ノート">
+    <meta property="og:description" content="波動関数と電子密度から構造最適化・振動数解析まで、量子化学計算の基礎をまとめます。">
+    <meta property="og:url" content="https://saka-d.github.io/homepage/pages/electronic-structure.html">
+    <meta name="twitter:card" content="summary">
+    <title>電子状態計算の基礎 | 坂口 大門</title>
+    <link rel="icon" href="../assets/profile-placeholder.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../styles/main.css?v=20260804-5">
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <nav class="navbar" aria-label="Main navigation">
+            <a class="site-title" href="../index.html">坂口大門のページ</a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+            <ul class="nav-menu" id="primary-navigation">
+                <li><a href="../index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="research.html">Research</a></li>
+                <li><a href="methods/index.html" class="active">Methods</a></li>
+                <li><a href="publications.html">Publications</a></li><li><a href="cv.html">CV</a></li><li><a href="contact.html">Contact</a></li>
+            </ul><div class="language-switcher" aria-label="Language"><a href="electronic-structure.html" lang="ja" hreflang="ja" class="active" aria-current="page" aria-label="日本語">JA</a><a href="../en/pages/electronic-structure.html" lang="en" hreflang="en" aria-label="English">EN</a></div>
+        </nav>
+    </header>
+
+    <main id="main">
+        <section class="page-hero docs-hero">
+            <div class="container">
+                <p class="breadcrumb"><a href="methods/index.html">計算化学ノート</a> / 電子状態計算の基礎</p>
+                <p class="eyebrow">Electronic Structure Theory</p>
+                <h1>電子状態計算の基礎</h1>
+                <p class="lead">計算条件を選び、結果を検証し、反応選択性の議論へつなげるための最小限の理論を整理します。</p>
+            </div>
+        </section>
+
+        <section class="section-band">
+            <div class="container docs-layout">
+                <aside class="docs-toc" aria-label="Page contents">
+                    <h2>このページの内容</h2>
+                    <ol>
+                        <li><a href="#schrodinger">電子Schrödinger方程式</a></li>
+                        <li><a href="#density">波動関数と電子密度</a></li>
+                        <li><a href="#hf-dft">HF法とDFT</a></li>
+                        <li><a href="#basis">基底関数</a></li>
+                        <li><a href="#pes">構造と振動数</a></li>
+                        <li><a href="#selectivity">選択性との関係</a></li>
+                        <li><a href="#checklist">検証チェックリスト</a></li>
+                        <li><a href="#references">参考文献</a></li>
+                    </ol>
+                </aside>
+
+                <div class="docs-content">
+                    <section class="docs-section" id="schrodinger">
+                        <h2>1. 電子Schrödinger方程式</h2>
+                        <p>
+                            Born–Oppenheimer近似のもとでは、核位置を固定して電子の定常状態を求めます。原子単位系を用いると、電子Hamiltonianは概略次式で表されます。
+                        </p>
+                        <div class="equation" aria-label="Electronic Schrodinger equation">
+                            <math display="block">
+                                <mover><mi>H</mi><mo>^</mo></mover><mi>Ψ</mi><mo>=</mo><mi>E</mi><mi>Ψ</mi>
+                            </math>
+                        </div>
+                        <div class="equation" aria-label="Electronic Hamiltonian">
+                            <math display="block">
+                                <mover><mi>H</mi><mo>^</mo></mover><mo>=</mo>
+                                <mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><munderover><mo>∑</mo><mi>i</mi><mi>N</mi></munderover><msubsup><mo>∇</mo><mi>i</mi><mn>2</mn></msubsup>
+                                <mo>−</mo><munderover><mo>∑</mo><mi>iA</mi><mrow><mi>N</mi><mi>M</mi></mrow></munderover><mfrac><msub><mi>Z</mi><mi>A</mi></msub><msub><mi>r</mi><mi>iA</mi></msub></mfrac>
+                                <mo>+</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>&lt;</mo><mi>j</mi></mrow><mi>N</mi></munderover><mfrac><mn>1</mn><msub><mi>r</mi><mi>ij</mi></msub></mfrac>
+                            </math>
+                        </div>
+                        <p>
+                            右辺の各項は電子の運動エネルギー、電子–核引力、電子–電子反発です。多電子系では電子–電子反発のため一般に厳密解を得られず、近似法と有限の基底関数を用います。
+                        </p>
+                    </section>
+
+                    <section class="docs-section" id="density">
+                        <h2>2. 波動関数と電子密度</h2>
+                        <p>
+                            <var>N</var>電子波動関数 <var>Ψ</var> は空間座標とスピン座標に依存します。一方、電子密度 <var>ρ</var>(<b>r</b>) は三次元空間上のスカラー場であり、その全空間積分は電子数になります。
+                        </p>
+                        <div class="equation" aria-label="Electron density normalization">
+                            <math display="block">
+                                <mrow><mo>∫</mo><mi>ρ</mi><mo>(</mo><mi mathvariant="bold">r</mi><mo>)</mo><mi>d</mi><mi mathvariant="bold">r</mi></mrow>
+                                <mo>=</mo><mi>N</mi>
+                            </math>
+                        </div>
+                        <p>
+                            電子密度、密度勾配、Hessian、静電ポテンシャルなどは実空間解析の基礎です。MultiwfnやNCI解析では、軌道係数だけでなく、これらの空間関数を格子上で評価します。
+                        </p>
+                    </section>
+
+                    <section class="docs-section" id="hf-dft">
+                        <h2>3. Hartree–Fock法と密度汎関数理論</h2>
+                        <h3>Hartree–Fock（HF）法</h3>
+                        <p>
+                            HF法は波動関数を一つのSlater行列式で近似し、軌道を自己無撞着場（SCF）計算で最適化します。交換相互作用を含みますが、反平行スピン電子間を含む電子相関は記述しません。
+                        </p>
+                        <h3>Kohn–Sham密度汎関数理論（KS-DFT）</h3>
+                        <p>DFTでは基底状態エネルギーを電子密度の汎関数として扱い、KS法では非相互作用軌道を用いて密度を構成します。</p>
+                        <div class="equation" aria-label="Kohn Sham equation">
+                            <math display="block">
+                                <mrow><mo>[</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mo>∇</mo><mn>2</mn></msup><mo>+</mo><msub><mi>v</mi><mi>eff</mi></msub><mo>(</mo><mi mathvariant="bold">r</mi><mo>)</mo><mo>]</mo></mrow>
+                                <msub><mi>φ</mi><mi>i</mi></msub><mo>=</mo><msub><mi>ε</mi><mi>i</mi></msub><msub><mi>φ</mi><mi>i</mi></msub>
+                            </math>
+                        </div>
+                        <p>
+                            実用上の精度は交換相関汎関数に依存します。汎関数名だけで精度を一般化せず、反応エネルギー、障壁、配座、弱い相互作用など、対象とする量に近いベンチマークを確認します。
+                        </p>
+                        <div class="data-table-wrap">
+                            <table class="data-table">
+                                <thead><tr><th>方法</th><th>主な特徴</th><th>注意点</th></tr></thead>
+                                <tbody>
+                                    <tr><td>HF</td><td>交換を厳密に扱う一行列式近似</td><td>電子相関を欠く</td></tr>
+                                    <tr><td>DFT</td><td>計算量と精度のバランスがよい</td><td>汎関数依存性、分散・自己相互作用誤差</td></tr>
+                                    <tr><td>MP2</td><td>摂動論による相関補正</td><td>基底関数依存性、系による過大評価</td></tr>
+                                    <tr><td>CCSD(T)</td><td>単一参照系で高精度な基準計算</td><td>計算量が大きく、大系には高価</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section class="docs-section" id="basis">
+                        <h2>4. 基底関数</h2>
+                        <p>分子軌道は原子中心基底関数の線形結合として展開されます。</p>
+                        <div class="equation" aria-label="Linear combination of atomic orbitals">
+                            <math display="block"><msub><mi>φ</mi><mi>i</mi></msub><mo>=</mo><munderover><mo>∑</mo><mi>μ</mi><mi>K</mi></munderover><msub><mi>C</mi><mrow><mi>μ</mi><mi>i</mi></mrow></msub><msub><mi>χ</mi><mi>μ</mi></msub></math>
+                        </div>
+                        <ul>
+                            <li><strong>分極関数:</strong> 結合形成や異方的な電子分布を表現します。</li>
+                            <li><strong>拡散関数:</strong> アニオン、Rydberg状態、分子間相互作用、電子密度の裾で重要になります。</li>
+                            <li><strong>基底関数収束:</strong> 小さい基底だけの結果を確定値とせず、目的物性について基底拡張による変化を調べます。</li>
+                        </ul>
+                        <p>基底関数の定義と出典は <a href="https://www.basissetexchange.org/" target="_blank" rel="noopener noreferrer">Basis Set Exchange</a> で確認できます。</p>
+                    </section>
+
+                    <section class="docs-section" id="pes">
+                        <h2>5. ポテンシャルエネルギー曲面、構造最適化、振動数</h2>
+                        <p>
+                            構造最適化は核座標 <b>R</b> に関するエネルギー勾配が十分小さい点を探す操作です。ただし、勾配がゼロであることだけでは極小構造か遷移状態かを区別できません。
+                        </p>
+                        <div class="equation" aria-label="Stationary point condition">
+                            <math display="block"><msub><mo>∇</mo><mi mathvariant="bold">R</mi></msub><mi>E</mi><mo>(</mo><mi mathvariant="bold">R</mi><mo>)</mo><mo>=</mo><mn>0</mn></math>
+                        </div>
+                        <ul>
+                            <li><strong>極小構造:</strong> Hessianの固有値がすべて正で、通常は虚振動数がありません。</li>
+                            <li><strong>一次鞍点:</strong> Hessianに負の固有値が一つあり、反応座標に対応する虚振動が一つ現れます。</li>
+                            <li><strong>確認:</strong> 虚振動モードを可視化し、意図した結合形成・切断方向であることを確認します。</li>
+                        </ul>
+                        <div class="callout warning"><strong>熱化学量の注意</strong><p>調和振動子近似、低振動数モード、標準状態、温度、濃度補正は自由エネルギー差に影響します。小さな選択性差を議論するときほど条件を明記します。</p></div>
+                    </section>
+
+                    <section class="docs-section" id="selectivity">
+                        <h2>6. 反応選択性との関係</h2>
+                        <p>遷移状態理論の単純な枠組みでは、二つの経路の速度比は活性化自由エネルギー差と関係します。</p>
+                        <div class="equation" aria-label="Selectivity and activation free energy">
+                            <math display="block">
+                                <mfrac><msub><mi>k</mi><mn>1</mn></msub><msub><mi>k</mi><mn>2</mn></msub></mfrac>
+                                <mo>≈</mo><mi>exp</mi><mrow><mo>(</mo><mo>−</mo><mfrac><mrow><msubsup><mi>ΔG</mi><mn>1</mn><mo>‡</mo></msubsup><mo>−</mo><msubsup><mi>ΔG</mi><mn>2</mn><mo>‡</mo></msubsup></mrow><mrow><mi>R</mi><mi>T</mi></mrow></mfrac><mo>)</mo></mrow>
+                            </math>
+                        </div>
+                        <p>
+                            ただし、複数配座、Curtin–Hammett条件、拡散、溶媒、反応経路の分岐が関与する場合は単一のエネルギー差だけでは不十分です。私の研究では、三次元構造と電子状態場を比較可能な記述子として扱い、選択性の予測と寄与の解釈を行います。
+                        </p>
+                    </section>
+
+                    <section class="docs-section" id="checklist">
+                        <h2>7. 計算結果の検証チェックリスト</h2>
+                        <ul class="detail-list">
+                            <li><strong>化学構造</strong><span>電荷、スピン多重度、プロトン化状態、立体化学、配座は正しいか。</span></li>
+                            <li><strong>収束</strong><span>SCFと構造最適化が規定の閾値を満たし、正常終了しているか。</span></li>
+                            <li><strong>停留点</strong><span>振動数の数とモードが、極小または遷移状態として妥当か。</span></li>
+                            <li><strong>モデル</strong><span>汎関数、基底関数、分散、溶媒、相対論効果が対象に適しているか。</span></li>
+                            <li><strong>再現性</strong><span>ソフトウェア版、入力、座標、単位、後処理条件を保存したか。</span></li>
+                        </ul>
+                    </section>
+
+                    <section class="docs-section" id="references">
+                        <h2>8. 参考文献</h2>
+                        <ol class="reference-list">
+                            <li>P. Hohenberg and W. Kohn, “Inhomogeneous Electron Gas,” <em>Phys. Rev.</em> 1964. <a href="https://doi.org/10.1103/PhysRev.136.B864" target="_blank" rel="noopener noreferrer">DOI</a></li>
+                            <li>W. Kohn and L. J. Sham, “Self-Consistent Equations Including Exchange and Correlation Effects,” <em>Phys. Rev.</em> 1965. <a href="https://doi.org/10.1103/PhysRev.140.A1133" target="_blank" rel="noopener noreferrer">DOI</a></li>
+                            <li>F. Jensen, <em>Introduction to Computational Chemistry</em>, 3rd ed., Wiley, 2017. <a href="https://www.wiley.com/en-us/Introduction+to+Computational+Chemistry%2C+3rd+Edition-p-9781118825990" target="_blank" rel="noopener noreferrer">Publisher</a></li>
+                            <li>K. L. Schuchardt et al., “Basis Set Exchange: A Community Database for Computational Sciences,” <em>J. Chem. Inf. Model.</em> 2007. <a href="https://doi.org/10.1021/ci600510j" target="_blank" rel="noopener noreferrer">DOI</a></li>
+                        </ol>
+                        <p>最終更新: <time datetime="2026-08-04">2026年8月4日</time></p>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer>
+    <script src="../scripts/main.js?v=20260804-2"></script>
+</body>
+</html>

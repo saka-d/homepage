@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="坂口大門の計算化学・ケモインフォマティクスノート。構造・電子状態計算と、化学情報・データ解析の二つの流れを解説します。">
+    <link rel="canonical" href="https://saka-d.github.io/homepage/pages/methods/"><link rel="alternate" hreflang="ja" href="https://saka-d.github.io/homepage/pages/methods/"><link rel="alternate" hreflang="en" href="https://saka-d.github.io/homepage/en/pages/methods/"><link rel="alternate" hreflang="x-default" href="https://saka-d.github.io/homepage/pages/methods/">
+    <meta property="og:type" content="website"><meta property="og:locale" content="ja_JP"><meta property="og:site_name" content="坂口 大門 | Daimon Sakaguchi">
+    <meta property="og:title" content="計算化学ノート | 坂口 大門"><meta property="og:description" content="構造・電子状態計算とケモインフォマティクス・データ解析を、目的別のワークフローとして整理します。">
+    <meta property="og:url" content="https://saka-d.github.io/homepage/pages/methods/"><meta name="twitter:card" content="summary">
+    <title>計算化学ノート | 坂口 大門</title>
+    <link rel="icon" href="../../assets/profile-placeholder.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../../styles/main.css?v=20260804-5">
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header"><nav class="navbar" aria-label="Main navigation"><a class="site-title" href="../../index.html">坂口大門のページ</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle navigation"><span></span><span></span><span></span></button><ul class="nav-menu" id="primary-navigation"><li><a href="../../index.html">Home</a></li><li><a href="../about.html">About</a></li><li><a href="../research.html">Research</a></li><li><a href="index.html" class="active" aria-current="page">Methods</a></li><li><a href="../publications.html">Publications</a></li><li><a href="../cv.html">CV</a></li><li><a href="../contact.html">Contact</a></li></ul><div class="language-switcher" aria-label="Language"><a href="index.html" lang="ja" hreflang="ja" class="active" aria-current="page" aria-label="日本語">JA</a><a href="../../en/pages/methods/index.html" lang="en" hreflang="en" aria-label="English">EN</a></div></nav></header>
+
+    <main id="main">
+        <section class="page-hero docs-hero"><div class="container"><p class="eyebrow">Computational Chemistry and Chemical Data</p><h1>分子を計算し、データから解釈する</h1><p class="lead">三次元構造と電子状態を求める流れ、化学構造を情報として比較・モデル化する流れを分け、最後に立体電子記述子から反応選択性の解釈へ接続します。</p></div></section>
+
+        <section class="section-band"><div class="container track-overview">
+            <div><p class="track-label">Track A</p><h2>構造・電子状態計算</h2><p>分子構造を準備し、半経験的方法と量子化学計算でエネルギー・波動関数を求め、反応経路と三次元場を解析します。</p><p class="workflow-inline"><span>構造</span><span>xTB</span><span>量子化学</span><span>経路</span><span>cube</span><span>実空間解析</span></p></div>
+            <div><p class="track-label data">Track B</p><h2>ケモインフォマティクス・データ解析</h2><p>化学構造を標準化し、fingerprint・記述子・立体場を特徴量へ変換して、統計モデルと可視化から傾向を読み解きます。</p><p class="workflow-inline data"><span>構造情報</span><span>検索</span><span>特徴量</span><span>回帰・PCA</span><span>SHAP</span></p></div>
+        </div></section>
+
+        <section class="section-band muted" id="electronic-track"><div class="container">
+            <div class="section-heading"><p class="section-kicker">Track A</p><h2>構造・電子状態計算</h2><p>構造生成から三次元場の可視化までを順にたどります。共通する理論は<a href="../electronic-structure.html">電子状態計算の共通理論</a>にまとめています。</p></div>
+            <ol class="method-sequence">
+                <li><a href="rdkit.html"><span class="method-number">01</span><span><strong>RDKit: 3D preparation</strong><span>SMILES、ETKDG、MMFF/UFF、RMSD</span></span></a></li>
+                <li><a href="xtb.html"><span class="method-number">02</span><span><strong>xTB</strong><span>GFN法、single point、最適化、振動数、溶媒</span></span></a></li>
+                <li><a href="gaussian.html"><span class="method-number">03</span><span><strong>Gaussian</strong><span>SCF、構造最適化、振動数、TS、IRC</span></span></a></li>
+                <li><a href="grrm.html"><span class="method-number">04</span><span><strong>GRRM</strong><span>ADDF、AFIR、SC-AFIR、MC-AFIR</span></span></a></li>
+                <li><a href="pyscf.html"><span class="method-number">05</span><span><strong>PySCF</strong><span>SCF・DFT、最適化、GPU4PySCF、Colab</span></span></a></li>
+                <li><a href="psi4.html"><span class="method-number">06</span><span><strong>Psi4</strong><span>SAPT、Fukui関数、dual descriptor</span></span></a></li>
+                <li><a href="orca.html"><span class="method-number">07</span><span><strong>ORCA</strong><span>EDA-NOCV、LED、相互作用エネルギー</span></span></a></li>
+                <li><a href="cube.html"><span class="method-number">08</span><span><strong>Cube files</strong><span>格子、電子密度、軌道、静電ポテンシャル</span></span></a></li>
+                <li><a href="multiwfn.html"><span class="method-number">09</span><span><strong>Multiwfn</strong><span>NCI、IGM、IGMH、IRI、実空間関数</span></span></a></li>
+                <li><a href="nciplot.html"><span class="method-number">10</span><span><strong>NCIplot</strong><span>RDG、promolecular density、cube、VMD</span></span></a></li>
+                <li><a href="py3dmol.html"><span class="method-number">11</span><span><strong>py3Dmol</strong><span>分子構造とcube等値面の対話的可視化</span></span></a></li>
+            </ol>
+        </div></section>
+
+        <section class="section-band" id="data-track"><div class="container">
+            <div class="section-heading"><p class="section-kicker">Track B</p><h2>ケモインフォマティクス・データ解析</h2><p>構造識別、検索、特徴量行列、統計モデル、立体記述子を一つの解析手順として扱います。</p></div>
+            <ol class="method-sequence data-sequence">
+                <li><a href="cheminformatics.html"><span class="method-number">B1</span><span><strong>RDKit: cheminformatics</strong><span>InChIKey、fingerprint、Gasteiger電荷、SMARTS、描画</span></span></a></li>
+                <li><a href="data-analysis.html"><span class="method-number">B2</span><span><strong>NumPy・scikit-learn・SHAP</strong><span>行列、正則化回帰、PCA、モデル解釈</span></span></a></li>
+                <li><a href="steric-descriptors.html"><span class="method-number">B3</span><span><strong>立体記述子と三次元場</strong><span>Sterimol、%Vbur、steric map、選択性解析</span></span></a></li>
+            </ol>
+        </div></section>
+
+        <section class="section-band muted"><div class="container"><div class="section-heading"><p class="section-kicker">Connection</p><h2>二つの流れを接続する</h2></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>段階</th><th>構造・電子状態側</th><th>データ解析側</th></tr></thead><tbody>
+            <tr><td>入力の定義</td><td>配座、電荷、spin、理論レベル</td><td>構造標準化、重複、目的変数、単位</td></tr>
+            <tr><td>表現</td><td>座標、波動関数、電子密度、cube</td><td>記述子、fingerprint、立体場、特徴量行列</td></tr>
+            <tr><td>解析</td><td>エネルギー、反応経路、実空間関数</td><td>正則化回帰、PCA、交差検証、SHAP</td></tr>
+            <tr><td>解釈</td><td>相互作用・電子状態の変化</td><td>選択性と構造・場の統計的関係</td></tr>
+        </tbody></table></div><div class="callout warning"><strong>再現性の単位</strong><p>構造・配座・計算条件だけでなく、構造標準化規則、特徴量の定義、分割方法、前処理を保存します。学習データに対する説明と、未観測反応への予測性能は分けて評価します。</p></div><p>最終更新: <time datetime="2026-08-04">2026年8月4日</time></p></div></section>
+    </main>
+
+    <footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer>
+    <script src="../../scripts/main.js?v=20260804-2"></script>
+</body>
+</html>

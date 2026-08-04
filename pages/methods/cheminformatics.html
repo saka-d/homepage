@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="RDKitによるInChI・InChIKey、fingerprint、Gasteiger電荷、分子記述子、SMARTS部分構造検索、二次元描画、データ標準化を解説します。"><link rel="canonical" href="https://saka-d.github.io/homepage/pages/methods/cheminformatics.html"><link rel="alternate" hreflang="ja" href="https://saka-d.github.io/homepage/pages/methods/cheminformatics.html"><link rel="alternate" hreflang="en" href="https://saka-d.github.io/homepage/en/pages/methods/cheminformatics.html"><link rel="alternate" hreflang="x-default" href="https://saka-d.github.io/homepage/pages/methods/cheminformatics.html"><meta property="og:type" content="article"><meta property="og:locale" content="ja_JP"><meta property="og:site_name" content="坂口 大門 | Daimon Sakaguchi"><meta property="og:title" content="RDKitケモインフォマティクス | 計算化学ノート"><meta property="og:description" content="化学構造を識別・検索・比較し、特徴量へ変換するRDKit workflow。"><meta property="og:url" content="https://saka-d.github.io/homepage/pages/methods/cheminformatics.html"><meta name="twitter:card" content="summary"><title>RDKitケモインフォマティクス | 計算化学ノート</title><link rel="icon" href="../../assets/profile-placeholder.svg" type="image/svg+xml"><link rel="stylesheet" href="../../styles/main.css?v=20260804-5">
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a><header class="site-header"><nav class="navbar" aria-label="Main navigation"><a class="site-title" href="../../index.html">坂口大門のページ</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle navigation"><span></span><span></span><span></span></button><ul class="nav-menu" id="primary-navigation"><li><a href="../../index.html">Home</a></li><li><a href="../about.html">About</a></li><li><a href="../research.html">Research</a></li><li><a href="index.html" class="active">Methods</a></li><li><a href="../publications.html">Publications</a></li><li><a href="../cv.html">CV</a></li><li><a href="../contact.html">Contact</a></li></ul><div class="language-switcher" aria-label="Language"><a href="cheminformatics.html" lang="ja" hreflang="ja" class="active" aria-current="page" aria-label="日本語">JA</a><a href="../../en/pages/methods/cheminformatics.html" lang="en" hreflang="en" aria-label="English">EN</a></div></nav></header>
+    <nav class="track-switcher" aria-label="Chemical data chapters"><div class="container track-switcher-inner"><a href="cheminformatics.html" class="active" aria-current="page">B1 RDKit cheminformatics</a><a href="data-analysis.html">B2 Data analysis</a><a href="steric-descriptors.html">B3 Steric descriptors</a></div></nav>
+    <main id="main">
+        <section class="page-hero docs-hero"><div class="container"><p class="breadcrumb"><a href="index.html">計算化学ノート</a> / B1 RDKit cheminformatics</p><p class="eyebrow">Chemical Identity, Search and Molecular Features</p><h1>RDKitケモインフォマティクス</h1><p class="lead">分子を識別し、部分構造と類似性で検索し、原子・分子記述子を機械学習へ渡せる表形式データに変換します。</p><dl class="tool-summary"><div><dt>入力</dt><dd>SMILES、SDF、MOL、CSV</dd></div><div><dt>主要処理</dt><dd>標準化、検索、fingerprint、記述子</dd></div><div><dt>出力</dt><dd>InChIKey、bit vector、DataFrame、SVG</dd></div></dl></div></section>
+        <section class="section-band"><div class="container docs-layout"><aside class="docs-toc" aria-label="Page contents"><h2>この章の内容</h2><ol><li><a href="#overview">概要</a></li><li><a href="#identity">構造識別子</a></li><li><a href="#standardize">標準化</a></li><li><a href="#descriptors">記述子と電荷</a></li><li><a href="#fingerprints">Fingerprint</a></li><li><a href="#substructure">部分構造検索</a></li><li><a href="#drawing">表示方法</a></li><li><a href="#dataset">データセット</a></li><li><a href="#references">参考資料</a></li></ol></aside>
+        <div class="docs-content">
+            <section class="docs-section" id="overview"><h2>1. 概要</h2><p>ケモインフォマティクスでは、分子を結合表として扱います。典型的な流れは <span class="formula-inline">read → sanitize → standardize → identify → featurize → search/model</span> です。三次元配座を生成する<a href="rdkit.html">RDKit構造前処理編</a>とは目的を分けます。</p><div class="callout"><strong>同じ化合物の定義を先に決める</strong><p>塩、溶媒和物、同位体、立体異性体、互変異性体、プロトン化状態を区別するかで、重複判定と目的変数の対応が変わります。</p></div></section>
+
+            <section class="docs-section" id="identity"><h2>2. SMILES・InChI・InChIKey</h2><div class="data-table-wrap"><table class="data-table"><thead><tr><th>表現</th><th>用途</th><th>注意</th></tr></thead><tbody><tr><td>canonical SMILES</td><td>RDKit内で一意化した文字列表現</td><td>canonicalizationはtoolkitとversionに依存し得る</td></tr><tr><td>isomeric SMILES</td><td>同位体・立体化学を含むSMILES</td><td>未指定立体中心は補われない</td></tr><tr><td>Standard InChI</td><td>layer化された標準識別子</td><td>標準化規則によって表現が統合される場合がある</td></tr><tr><td>InChIKey</td><td>InChIを固定長文字列へhash化し照合</td><td>不可逆で、Keyだけから構造は復元できない</td></tr></tbody></table></div><div class="code-sample"><div class="code-label"><span>Python</span><button class="copy-button" type="button" data-copy-target="chem-id">Copy</button></div><pre id="chem-id"><code>from rdkit import Chem
+from rdkit.Chem import inchi
+
+mol = Chem.MolFromSmiles("C[C@H](O)C(=O)O")
+canonical = Chem.MolToSmiles(mol, canonical=True, isomericSmiles=True)
+inchi_text = inchi.MolToInchi(mol)
+inchi_key = inchi.InchiToInchiKey(inchi_text)
+
+print(canonical)
+print(inchi_text)
+print(inchi_key)</code></pre></div><p>データ表には元SMILES、標準化後SMILES、InChIKey、標準化処理versionを別列で残すと追跡しやすくなります。</p></section>
+
+            <section class="docs-section" id="standardize"><h2>3. 構造標準化</h2><p>標準化は「正しい唯一の構造」を発見する処理ではなく、解析目的に合わせて表記ゆれを統一する規則です。RDKitの<code>rdMolStandardize</code>にはcleanup、fragment選択、uncharging、tautomer canonicalizationなどがあります。</p><div class="code-sample"><div class="code-label"><span>Python</span><button class="copy-button" type="button" data-copy-target="chem-standardize">Copy</button></div><pre id="chem-standardize"><code>from rdkit import Chem
+from rdkit.Chem.MolStandardize import rdMolStandardize
+
+raw = Chem.MolFromSmiles("CC(=O)[O-].[Na+]")
+clean = rdMolStandardize.Cleanup(raw)
+parent = rdMolStandardize.FragmentParent(clean)
+uncharged = rdMolStandardize.Uncharger().uncharge(parent)
+
+print(Chem.MolToSmiles(raw))
+print(Chem.MolToSmiles(uncharged))</code></pre></div><div class="callout warning"><strong>目的変数との整合性</strong><p>測定値が塩型や特定pHに対応する場合、largest fragmentやunchargingで情報を捨てると構造と測定条件が不一致になります。元構造を保持し、処理規則をdataset単位で固定します。</p></div></section>
+
+            <section class="docs-section" id="descriptors"><h2>4. 分子記述子とGasteiger電荷</h2><p>分子記述子は構造全体を数値へ圧縮します。分子量、Crippen LogP、TPSA、水素結合donor/acceptor、回転可能結合数、ring数などを目的に応じて選びます。</p><div class="code-sample"><div class="code-label"><span>Python</span><button class="copy-button" type="button" data-copy-target="chem-desc">Copy</button></div><pre id="chem-desc"><code>from rdkit.Chem import AllChem, Descriptors
+
+values = {
+    "MolWt": Descriptors.MolWt(mol),
+    "MolLogP": Descriptors.MolLogP(mol),
+    "TPSA": Descriptors.TPSA(mol),
+    "HBD": Descriptors.NumHDonors(mol),
+    "HBA": Descriptors.NumHAcceptors(mol),
+}
+
+AllChem.ComputeGasteigerCharges(mol)
+charges = [atom.GetDoubleProp("_GasteigerCharge") for atom in mol.GetAtoms()]
+print(values, charges)</code></pre></div><p>Gasteiger電荷は結合表と経験的parameterから反復的に得る高速な部分電荷です。Mulliken、NPA、Hirshfeldなど波動関数に基づくpopulation analysisとは定義が異なり、値を混在させません。</p></section>
+
+            <section class="docs-section" id="fingerprints"><h2>5. Fingerprintと分子類似度</h2><p>fingerprintは分子中の局所環境やpathをbitまたはcountへ写像します。Morgan、RDKit topological、MACCS keysなどは表現する特徴が異なります。</p><div class="equation"><math display="block"><mi>T</mi><mo>(</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo>)</mo><mo>=</mo><mfrac><msub><mi>n</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub><mrow><msub><mi>n</mi><mi>A</mi></msub><mo>+</mo><msub><mi>n</mi><mi>B</mi></msub><mo>-</mo><msub><mi>n</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></mrow></mfrac></math></div><p>Tanimoto係数では、<math><msub><mi>n</mi><mi>A</mi></msub></math>と<math><msub><mi>n</mi><mi>B</mi></msub></math>を各bit vectorのon-bit数、<math><msub><mi>n</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math>を共通on-bit数とします。</p><div class="code-sample"><div class="code-label"><span>Python</span><button class="copy-button" type="button" data-copy-target="chem-fp">Copy</button></div><pre id="chem-fp"><code>from rdkit import Chem, DataStructs
+from rdkit.Chem import rdFingerprintGenerator
+
+mols = [Chem.MolFromSmiles(s) for s in ["CCO", "CCCO", "c1ccccc1O"]]
+generator = rdFingerprintGenerator.GetMorganGenerator(radius=2, fpSize=2048)
+fps = [generator.GetFingerprint(m) for m in mols]
+
+similarities = DataStructs.BulkTanimotoSimilarity(fps[0], fps[1:])
+print(similarities)</code></pre></div><div class="callout warning"><strong>類似度は表現との組です</strong><p>同じ分子対でもfingerprint type、radius、bit数、feature設定で値が変わります。異なる設定で得たTanimoto係数を同じ閾値で比較しません。bit collisionと分子サイズ依存にも注意します。</p></div></section>
+
+            <section class="docs-section" id="substructure"><h2>6. SMARTSによる部分構造検索</h2><p>SMARTSはatom・bond queryを記述します。SMILESが一つの分子を表すのに対し、SMARTSは条件を満たす構造集合を表します。</p><div class="code-sample"><div class="code-label"><span>Python</span><button class="copy-button" type="button" data-copy-target="chem-smarts">Copy</button></div><pre id="chem-smarts"><code>amide = Chem.MolFromSmarts("[NX3][CX3](=[OX1])")
+target = Chem.MolFromSmiles("CC(=O)NC1=CC=CC=C1")
+
+matches = target.GetSubstructMatches(amide, useChirality=True)
+print(matches)
+
+params = Chem.SubstructMatchParameters()
+params.useChirality = True
+params.uniquify = True
+print(target.GetSubstructMatches(amide, params))</code></pre></div><p>芳香族性、形式電荷、原子価、hydrogen数、ring条件を必要なだけ明示します。官能基名から作った短いpatternは、想定外の化学環境に一致しないかpositive/negative test setで検証します。</p></section>
+
+            <section class="docs-section" id="drawing"><h2>7. 二次元表示と寄与の可視化</h2><p>部分構造matchは該当原子と結合を強調し、Gasteiger電荷やatom-wise contributionはSimilarityMaps等で連続色表示できます。</p><div class="code-sample"><div class="code-label"><span>Python</span><button class="copy-button" type="button" data-copy-target="chem-draw">Copy</button></div><pre id="chem-draw"><code>from rdkit.Chem.Draw import rdMolDraw2D
+
+hit_atoms = list(target.GetSubstructMatch(amide))
+drawer = rdMolDraw2D.MolDraw2DSVG(420, 280)
+rdMolDraw2D.PrepareAndDrawMolecule(drawer, target, highlightAtoms=hit_atoms)
+drawer.FinishDrawing()
+
+with open("amide_match.svg", "w", encoding="utf-8") as f:
+    f.write(drawer.GetDrawingText())</code></pre></div><p>色だけで意味を伝えず、color scale、単位、正負、highlight条件をcaptionへ記載します。複数分子比較では共通coreの配向を揃えます。</p></section>
+
+            <section class="docs-section" id="dataset"><h2>8. 特徴量表の構築</h2><ol><li>元構造とsource IDを保持する。</li><li>parse失敗、valence warning、混合物を記録する。</li><li>標準化後SMILESとInChIKeyを生成し、重複を調査する。</li><li>記述子の定義・RDKit versionを固定する。</li><li>欠損、無限大、ほぼ定数の特徴量を確認する。</li><li>目的変数、単位、測定条件を構造と対応させる。</li><li>random splitだけでなくscaffold・series単位の分割を検討する。</li></ol><p>作成した<math><mi>X</mi></math>と<math><mi>y</mi></math>は<a href="data-analysis.html">数値計算・機械学習章</a>へ渡します。立体情報が重要な場合は、単一2D fingerprintだけでなく<a href="steric-descriptors.html">立体記述子</a>を併用します。</p></section>
+
+            <section class="docs-section" id="references"><h2>9. 参考資料</h2><ul class="reference-list"><li><a href="https://www.rdkit.org/docs/GettingStartedInPython.html" target="_blank" rel="noopener noreferrer">RDKit: Getting Started with the RDKit in Python</a></li><li><a href="https://www.rdkit.org/docs/RDKit_Book.html" target="_blank" rel="noopener noreferrer">The RDKit Book</a></li><li><a href="https://www.rdkit.org/docs/source/rdkit.Chem.inchi.html" target="_blank" rel="noopener noreferrer">RDKit InChI API</a></li><li><a href="https://www.rdkit.org/docs/source/rdkit.Chem.MolStandardize.rdMolStandardize.html" target="_blank" rel="noopener noreferrer">RDKit MolStandardize API</a></li></ul><p>最終更新: <time datetime="2026-08-04">2026年8月4日</time></p></section>
+        </div></div></section>
+    </main><footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer><script src="../../scripts/main.js?v=20260804-2"></script>
+</body></html>
