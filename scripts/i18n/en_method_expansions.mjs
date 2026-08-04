@@ -174,7 +174,7 @@ cubegen 0 MO=Homo job.fchk homo.cube -2 h</code></pre>`,
 water-dimer.xyz
 OUTPUT 2
 CUTOFFS 0.2 2.0
-CUTPLOT -0.05 0.05 0.5
+CUTPLOT 0.05 0.5
 ISORDG 0.5</code></pre><p>Run with <code>nciplot example.nci example.out</code>. Input keywords vary across releases, so retain the exact input and version.</p>`,
       grid: `<p>Use the same grid extent, spacing, density cutoff, RDG cutoff, and plotting range for a comparative series. A visually larger surface may otherwise be a parameter artifact.</p>`,
       outputs: `<div class="data-table-wrap"><table class="data-table"><thead><tr><th>Output</th><th>Use</th></tr></thead><tbody><tr><td>RDG cube</td><td>Defines the isosurface geometry</td></tr><tr><td>signed-density cube</td><td>Colors the surface</td></tr><tr><td>scatter data</td><td>Plots RDG against signed density</td></tr><tr><td>VMD script</td><td>Reproduces visualization settings</td></tr></tbody></table></div>`,

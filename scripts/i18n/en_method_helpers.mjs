@@ -24,13 +24,18 @@ export function chapterNav(type, active) {
 export function methodPage({ slug, title, eyebrow, lead, position, input, output, type = "electronic", sections, description }) {
   sections = expandMethodSections(slug, sections);
   const toc = sections.map((section) => `<li><a href="#${section.id}">${section.toc || section.title}</a></li>`).join("");
-  const content = sections.map((section, index) => `<section class="docs-section" id="${section.id}"><h2>${index + 1}. ${section.title}</h2>${section.html}</section>`).join("");
+  const content = sections.map((section, index) => {
+    const isExample = section.id === "example-results";
+    const sectionClass = isExample ? "docs-section calculation-example" : "docs-section";
+    const label = isExample ? '<p class="example-label">Reproducible Example</p>' : "";
+    return `<section class="${sectionClass}" id="${section.id}">${label}<h2>${index + 1}. ${section.title}</h2>${section.html}</section>`;
+  }).join("");
   const number = type === "data" ? dataChapters.find(([name]) => name === slug)?.[1].split(" ")[0] : electronicChapters.find(([name]) => name === slug)?.[1].split(" ")[0];
   return {
     file: `pages/methods/${slug}.html`, active: "methods", ogType: "article",
     title: `${title} | Computational Chemistry Notes`, description,
     subnav: chapterNav(type, slug),
-    body: `<section class="page-hero docs-hero"><div class="container"><p class="breadcrumb"><a href="index.html">Computational Chemistry Notes</a> / ${number} ${title}</p><p class="eyebrow">${eyebrow}</p><h1>${title}</h1><p class="lead">${lead}</p><dl class="tool-summary"><div><dt>Role</dt><dd>${position}</dd></div><div><dt>Typical input</dt><dd>${input}</dd></div><div><dt>Typical output</dt><dd>${output}</dd></div></dl></div></section><section class="section-band"><div class="container docs-layout"><aside class="docs-toc" aria-label="Page contents"><h2>In this chapter</h2><ol>${toc}</ol></aside><div class="docs-content">${content}</div></div></section>`,
+    body: `<section class="page-hero docs-hero"><div class="container"><p class="breadcrumb"><a href="index.html">Computational Chemistry Notes</a> / ${number} ${title}</p><p class="eyebrow">${eyebrow}</p><h1>${title}</h1><p class="lead">${lead}</p><dl class="tool-summary"><div><dt>Role</dt><dd>${position}</dd></div><div><dt>Typical input</dt><dd>${input}</dd></div><div><dt>Typical output</dt><dd>${output}</dd></div></dl></div></section><section class="section-band"><div class="container docs-layout"><aside class="docs-toc" aria-label="Page contents"><h2>In this chapter</h2><ol>${toc}</ol></aside><div class="docs-content">${content}<p class="method-review">Last reviewed: August 4, 2026. Check the linked official documentation for syntax specific to the installed software version.</p></div></div></section>`,
   };
 }
 

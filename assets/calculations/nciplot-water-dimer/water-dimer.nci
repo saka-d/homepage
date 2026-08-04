@@ -1,0 +1,10 @@
+1
+water-dimer.wfn
+
+ONAME water-dimer
+OUTPUT 3
+CUBE -1.5 -1.8 -1.3 4.4 1.8 1.3
+INCREMENTS 0.12 0.12 0.12
+CUTOFFS 0.10 2.00
+CUTPLOT 0.05 0.50
+ISORDG 0.50

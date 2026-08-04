@@ -27,3 +27,16 @@ export const academicPages = [
     </div></section>`,
   },
 ];
+
+const cvPage = academicPages.find((page) => page.file === "pages/cv.html");
+cvPage.body = cvPage.body
+  .replace('</a></span></li><li><time>2025.09–10</time>', '</a><small class="timeline-note">A research visit focused on organic reaction mechanisms and selectivity is planned.</small></span></li><li><time>2025.09–10</time>')
+  .replace('</a></span></li></ol></article>\n      <article><h2>Research Theme', '</a><small class="timeline-note">Participated in a joint research program grounded in quantum-chemical calculations.</small></span></li></ol></article>\n      <article><h2>Research Theme');
+
+const publicationsPage = academicPages.find((page) => page.file === "pages/publications.html");
+const publicationFilter = '<section class="section-band compact-band"><div class="container filter-toolbar" aria-label="Filter by publication year"><span>Year</span><div role="group" aria-label="Publication year"><button type="button" data-publication-filter="all" aria-pressed="true">All</button><button type="button" data-publication-filter="2026" aria-pressed="false">2026</button><button type="button" data-publication-filter="2025" aria-pressed="false">2025</button><button type="button" data-publication-filter="2024" aria-pressed="false">2024</button></div><p data-publication-count aria-live="polite"></p></div></section>';
+publicationsPage.body = publicationsPage.body
+  .replace('</div></section><section class="section-band"><div class="container content-stack">', `</div></section>${publicationFilter}<section class="section-band"><div class="container content-stack">`)
+  .replace('ACS Omega 10(42), 49805–49815, 2025.</p>', 'ACS Omega 10(42), 49805–49815, 2025.</p><p class="publication-summary">Positive-unlabeled learning predicts oxidative-homocoupling reactivity from known reactions and unlabeled substrates. The study demonstrates a practical machine-learning strategy for experimental datasets in which comprehensive negative examples are difficult to obtain.</p>')
+  .replace('The Journal of Physical Chemistry A 129(39), 8945–8958, 2025.</p>', 'The Journal of Physical Chemistry A 129(39), 8945–8958, 2025.</p><p class="publication-summary">Three-dimensional electronic-state fields and data analysis are used to quantify selectivity in asymmetric ketone reduction and identify spatial regions associated with its control. <a href="methods/electronic-descriptors.html">Related descriptor notes</a></p>')
+  .replace('Journal of Chemical Information and Modeling 64(8), 3213–3221, 2024.</p>', 'Journal of Chemical Information and Modeling 64(8), 3213–3221, 2024.</p><p class="publication-summary">Three-dimensional molecular information and machine learning are combined to predict and interpret facial selectivity in nucleophilic additions to cyclic ketones. <a href="methods/reaction-selectivity.html">Reaction-selectivity foundations</a></p>');

@@ -1,0 +1,5 @@
+rdkit==2026.3.5
+pyscf==2.14.0
+matplotlib==3.11.1
+numpy==2.5.1
+scikit-image==0.26.0

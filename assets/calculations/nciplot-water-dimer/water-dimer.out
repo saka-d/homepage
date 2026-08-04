@@ -1,0 +1,107 @@
+ # ----------------- NCIPLOT ------------------------
+ # --- PLOTTING NON COVALENT INTERACTION REGIONS ----
+ # ---             E.R. Johnson                  ----
+ # ---          J. Contreras-Garcia              ----
+ # ----------    Duke University         ------------
+ #                                                   
+ # ---             A. de la Roza                  ---
+ # --------- University of California Merced --------
+ #                                                   
+ # ---               R. A. Boto                   ---
+ # ---                 C. Quan                     --
+ # --------  Université Pierre et Marie Curie -------
+ # --------------------------------------------------
+ # ---              Please cite                  ----
+ # --J. Am. Chem. Soc., 2010, 132 (18), pp 6498–6506-
+ # --------------------------------------------------
+ # --------------------------------------------------
+ # ---     Contributions for the wfn properties  ----
+ # ---      from H. L. Schmider are acknowledged  ---
+ # --------------------------------------------------
+ # --------------------------------------------------
+ # ---     Contributions for the wfx reader      ----
+ # ---      from Dave Arias are acknowledged      ---
+ # --------------------------------------------------
+ # --------------------------------------------------
+ # ---     Contributions for the integration --------
+ # ---      algorithms from Erna Wieduwilt    --------
+ # ---             are acknowledged           --------
+ # ---------------------------------------------------
+ #
+ # Start -- 2026.08.04, 17:50:13.621
+
+File: ./dat/h__lda.wfc
+WARNING(readgrid): Atomic density file not found
+File: ./dat/o__lda.wfc
+WARNING(readgrid): Atomic density file not found
+-----------------------------------------------------
+      INPUT INFORMATION:
+-----------------------------------------------------
+
+-----------------------------------------------------
+      Calculation details:
+-----------------------------------------------------
+RHO  THRESHOLD   (au): 0.10
+RDG  THRESHOLD   (au): 2.00
+
+-----------------------------------------------------
+      Writing output in the following units:
+-----------------------------------------------------
+
+ Sign(lambda2)xDensity x Reduced Density Gradient    = water-dimer.dat
+
+ Reduced Density Gradient,RDG      = water-dimer-grad.cube
+ Sign(lambda2)xDensity,LS          = water-dimer-dens.cube
+ VMD script                        = water-dimer.vmd
+
+
+
+-----------------------------------------------------
+      Operating grid and increments: Grid-1
+-----------------------------------------------------
+ x0,y0,z0  =    -1.5000    -1.8000    -1.3000
+ x1,y1,z1  =     4.4000     1.8000     1.3000
+ ix,iy,iz  =  1.81    1.81    1.81
+ nx,ny,nz  =    4       2       2
+
+ Time for computing density & RDG =   0.00 secs
+  0.00% of small boxes are removed.
+
+
+-----------------------------------------------------
+      Operating grid and increments: Grid-2
+-----------------------------------------------------
+ x0,y0,z0  =    -1.5000    -1.8000    -1.3000
+ x1,y1,z1  =     4.4000     1.8000     1.3000
+ ix,iy,iz  =  0.91    0.91    0.91
+ nx,ny,nz  =    7       4       3
+
+ Time for computing density & RDG =   0.00 secs
+  0.00% of small boxes are removed.
+
+
+-----------------------------------------------------
+      Operating grid and increments: Grid-3
+-----------------------------------------------------
+ x0,y0,z0  =    -1.5000    -1.8000    -1.3000
+ x1,y1,z1  =     4.4000     1.8000     1.3000
+ ix,iy,iz  =  0.45    0.45    0.45
+ nx,ny,nz  =   14       8       6
+
+ Time for computing density & RDG =   0.01 secs
+  9.67% of small boxes are removed.
+
+
+-----------------------------------------------------
+      Operating grid and increments: Grid-4
+-----------------------------------------------------
+ x0,y0,z0  =    -1.5000    -1.8000    -1.3000
+ x1,y1,z1  =     4.4000     1.8000     1.3000
+ ix,iy,iz  =  0.23    0.23    0.23
+ nx,ny,nz  =   27      16      12
+
+ Time for computing density & RDG =   0.08 secs
+ 26.95% of small boxes are removed.
+ Time for writing outputs =   0.01 secs
+End -- 2026.08.04, 17:50:13.715
+

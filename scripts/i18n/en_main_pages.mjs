@@ -25,3 +25,21 @@ export const mainPages = [
     body: `<section class="page-hero"><div class="container"><p class="eyebrow">Contact</p><h1>Contact</h1><p class="lead">Affiliation, laboratory, and external literature-index links. No email address is published on this website.</p></div></section><section class="section-band"><div class="container contact-grid"><article class="contact-card"><h2>Affiliation</h2><p>Department of Chemistry and Life Science, Graduate School of Engineering Science, Yokohama National University</p><p class="contact-value">Physical Organic Chemistry and Molecular Design Laboratory (Gotoh Laboratory)</p></article><article class="contact-card"><h2>Profiles and Indexes</h2><ul class="link-list"><li><a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></li><li><a href="https://scholar.google.com/scholar?q=%22Daimon+Sakaguchi%22" target="_blank" rel="noopener noreferrer">Google Scholar search</a></li><li><a href="https://cir.nii.ac.jp/crid/1410022708934975872" target="_blank" rel="noopener noreferrer">CiNii Research</a></li><li><a href="https://pubmed.ncbi.nlm.nih.gov/?term=Daimon+Sakaguchi" target="_blank" rel="noopener noreferrer">PubMed search</a></li></ul></article><article class="contact-card"><h2>Laboratory</h2><p>I am a member of POCLab, led by Associate Professor Hiroaki Gotoh.</p><p class="contact-value"><a href="https://poclab-web.github.io/homepage/" target="_blank" rel="noopener noreferrer">Gotoh Lab / POCLab</a></p></article></div></section>`,
   },
 ];
+
+const homePage = mainPages.find((page) => page.file === "index.html");
+homePage.body = homePage.body.replace(
+  '<a class="text-link" href="pages/cv.html">Awards and support</a>',
+  '<div class="link-row"><a class="text-link" href="pages/news.html">All news</a><a class="text-link" href="pages/cv.html">Awards and support</a></div>',
+);
+
+const researchPage = mainPages.find((page) => page.file === "pages/research.html");
+researchPage.body = researchPage.body.replace(
+  '</article></div></div></section><section class="section-band"><div class="container two-column">',
+  '</article></div><div class="section-action"><p>The detailed research page connects the central questions, analytical workflow, and relationships among these themes.</p><a class="btn" href="research-details.html">Read research in detail</a></div></div></section><section class="section-band"><div class="container two-column">',
+);
+
+const contactPage = mainPages.find((page) => page.file === "pages/contact.html");
+contactPage.body = contactPage.body.replace(
+  '</article></div></section>',
+  '</article><article class="contact-card collaboration-card"><h2>Collaboration</h2><p>I welcome research discussions and potential collaborations in the following areas.</p><ul class="clean-list"><li>Site, facial, and enantioselectivity in organic reactions</li><li>Design and analysis of three-dimensional electronic and steric descriptors</li><li>Computational-chemistry workflows and reaction-data analysis</li></ul><p class="contact-value">See <a href="research-details.html">Research</a> for the scientific scope and <a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a> for public code.</p></article></div></section>',
+);

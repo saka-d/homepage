@@ -1,0 +1,21 @@
+{
+  "example": "Acetone electronic fields",
+  "geometry": "RDKit ETKDGv3 and MMFF94 optimized geometry",
+  "electronic_structure": "B3LYP/def2-SVP single-point calculation",
+  "charge": 0,
+  "spin": 0,
+  "scf_converged": true,
+  "scf_energy_hartree": -193.01179457004213,
+  "homo_energy_hartree": -0.24840877847359666,
+  "lumo_energy_hartree": -0.018948617376028043,
+  "cube_resolution_angstrom": 0.24,
+  "cube_margin_angstrom": 4.0,
+  "density_integral_electrons": 32.03888476266448,
+  "expected_electrons": 32,
+  "software": {
+    "PySCF": "2.14.0",
+    "RDKit": "2026.03.5",
+    "Python": "3.12.4"
+  },
+  "note": "This is an educational single-point example, not a converged research result."
+}

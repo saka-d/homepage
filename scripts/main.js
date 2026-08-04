@@ -42,4 +42,44 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+
+    const methodsSearch = document.querySelector("[data-methods-search]");
+    const methodItems = Array.from(document.querySelectorAll(".method-sequence li"));
+    const methodsCount = document.querySelector("[data-methods-count]");
+
+    if (methodsSearch instanceof HTMLInputElement && methodItems.length) {
+        const updateMethods = () => {
+            const query = methodsSearch.value.trim().toLocaleLowerCase();
+            let visible = 0;
+            methodItems.forEach((item) => {
+                const matches = !query || (item.textContent || "").toLocaleLowerCase().includes(query);
+                item.hidden = !matches;
+                visible += Number(matches);
+            });
+            if (methodsCount) methodsCount.textContent = `${visible} / ${methodItems.length}`;
+        };
+        methodsSearch.addEventListener("input", updateMethods);
+        updateMethods();
+    }
+
+    const publicationButtons = document.querySelectorAll("[data-publication-filter]");
+    const publicationItems = Array.from(document.querySelectorAll(".publications-list .publication-item"));
+    const publicationCount = document.querySelector("[data-publication-count]");
+
+    publicationButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            const filter = button.getAttribute("data-publication-filter") || "all";
+            let visible = 0;
+            publicationButtons.forEach((candidate) => candidate.setAttribute("aria-pressed", String(candidate === button)));
+            publicationItems.forEach((item) => {
+                const year = item.querySelector(".publication-status")?.textContent?.trim() || "";
+                const matches = filter === "all" || year.includes(filter);
+                item.hidden = !matches;
+                visible += Number(matches);
+            });
+            if (publicationCount) publicationCount.textContent = `${visible}件`;
+        });
+    });
+
+    if (publicationCount && publicationItems.length) publicationCount.textContent = `${publicationItems.length}件`;
 });

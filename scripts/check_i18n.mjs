@@ -31,7 +31,7 @@ for (const englishFile of englishFiles) {
   if (en.includes("<msubsup><mo>∥")) errors.push(`${englishFile}: malformed norm MathML remains`);
 }
 
-if (englishFiles.length !== 22) errors.push(`Expected 22 English pages, found ${englishFiles.length}`);
+if (englishFiles.length !== 28) errors.push(`Expected 28 English pages, found ${englishFiles.length}`);
 if (errors.length) {
   console.error(errors.join("\n"));
   process.exit(1);

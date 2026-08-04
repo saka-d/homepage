@@ -24,6 +24,12 @@ const files = [
   "pages/methods/cheminformatics.html",
   "pages/methods/data-analysis.html",
   "pages/methods/steric-descriptors.html",
+  "pages/news.html",
+  "pages/research-details.html",
+  "pages/methods/reaction-selectivity.html",
+  "pages/methods/electronic-descriptors.html",
+  "pages/methods/reproducibility.html",
+  "pages/methods/glossary.html",
 ];
 
 for (const file of files) {
@@ -54,6 +60,7 @@ for (const file of files) {
     html = html.replace(/(<\/ul>)(\s*<\/nav>)/, `$1${switcher}$2`);
   }
 
-  html = html.replaceAll("main.css?v=20260804-4", "main.css?v=20260804-5");
+  html = html.replace(/main\.css\?v=20260804-\d+/g, "main.css?v=20260804-9");
+  html = html.replace("main.js?v=20260804-2", "main.js?v=20260804-3");
   fs.writeFileSync(file, html);
 }

@@ -10,7 +10,7 @@
     <meta property="og:url" content="https://saka-d.github.io/homepage/pages/methods/"><meta name="twitter:card" content="summary">
     <title>計算化学ノート | 坂口 大門</title>
     <link rel="icon" href="../../assets/profile-placeholder.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="../../styles/main.css?v=20260804-5">
+    <link rel="stylesheet" href="../../styles/main.css?v=20260804-9">
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -22,6 +22,11 @@
         <section class="section-band"><div class="container track-overview">
             <div><p class="track-label">Track A</p><h2>構造・電子状態計算</h2><p>分子構造を準備し、半経験的方法と量子化学計算でエネルギー・波動関数を求め、反応経路と三次元場を解析します。</p><p class="workflow-inline"><span>構造</span><span>xTB</span><span>量子化学</span><span>経路</span><span>cube</span><span>実空間解析</span></p></div>
             <div><p class="track-label data">Track B</p><h2>ケモインフォマティクス・データ解析</h2><p>化学構造を標準化し、fingerprint・記述子・立体場を特徴量へ変換して、統計モデルと可視化から傾向を読み解きます。</p><p class="workflow-inline data"><span>構造情報</span><span>検索</span><span>特徴量</span><span>回帰・PCA</span><span>SHAP</span></p></div>
+        </div></section>
+
+        <section class="section-band compact-band"><div class="container search-panel">
+            <div><p class="section-kicker">Find a Topic</p><h2>ノート内の項目を探す</h2><p>ソフトウェア名、計算手法、解析語で下の章一覧を絞り込めます。</p></div>
+            <div class="search-control"><label for="methods-search">キーワード</label><input id="methods-search" type="search" data-methods-search placeholder="例: NCI, PCA, 構造最適化" autocomplete="off"><p class="search-status" data-methods-count aria-live="polite"></p></div>
         </div></section>
 
         <section class="section-band muted" id="electronic-track"><div class="container">
@@ -56,9 +61,11 @@
             <tr><td>解析</td><td>エネルギー、反応経路、実空間関数</td><td>正則化回帰、PCA、交差検証、SHAP</td></tr>
             <tr><td>解釈</td><td>相互作用・電子状態の変化</td><td>選択性と構造・場の統計的関係</td></tr>
         </tbody></table></div><div class="callout warning"><strong>再現性の単位</strong><p>構造・配座・計算条件だけでなく、構造標準化規則、特徴量の定義、分割方法、前処理を保存します。学習データに対する説明と、未観測反応への予測性能は分けて評価します。</p></div><p>最終更新: <time datetime="2026-08-04">2026年8月4日</time></p></div></section>
+
+        <section class="section-band"><div class="container"><div class="section-heading"><p class="section-kicker">Concepts and Reference</p><h2>手法を横断して読む</h2><p>個別ソフトウェアの操作から離れ、研究設計・記述子・再現性を共通の言葉で整理します。</p></div><div class="topic-detail-grid"><a href="reaction-selectivity.html"><strong>反応選択性解析</strong><span>生成比、ΔΔG‡、配座ensemble、統計モデル</span></a><a href="electronic-descriptors.html"><strong>電子状態・立体記述子</strong><span>密度、ESP、Fukui、NCI/IGMH、Sterimol</span></a><a href="reproducibility.html"><strong>再現可能な計算と解析</strong><span>計算条件、環境、データ分割、公開前検証</span></a><a href="glossary.html"><strong>用語集</strong><span>計算化学・ケモインフォマティクス・機械学習</span></a></div></div></section>
     </main>
 
     <footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer>
-    <script src="../../scripts/main.js?v=20260804-2"></script>
+    <script src="../../scripts/main.js?v=20260804-3"></script>
 </body>
 </html>

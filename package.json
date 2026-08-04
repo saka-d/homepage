@@ -4,8 +4,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "examples:generate": "sh scripts/calculations/run_examples.sh",
+    "examples:markup": "node scripts/add_calculation_examples.mjs",
     "i18n:markup": "node scripts/add_i18n_markup.mjs",
-    "i18n:generate": "node scripts/generate_english_site.mjs",
+    "i18n:generate": "node scripts/generate_english_site.mjs && node scripts/add_calculation_examples.mjs",
     "i18n:check": "node scripts/check_i18n.mjs"
   },
   "author": "Sakaguchi Daimon",

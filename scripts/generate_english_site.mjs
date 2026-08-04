@@ -5,8 +5,12 @@ import { academicPages } from "./i18n/en_academic_pages.mjs";
 import { methodPagesCore1 } from "./i18n/en_methods_core1.mjs";
 import { methodPagesCore2 } from "./i18n/en_methods_core2.mjs";
 import { methodPagesData } from "./i18n/en_methods_data.mjs";
+import { renderJapanesePage } from "./i18n/render_ja.mjs";
+import { englishSupplementalPages, japaneseSupplementalPages } from "./i18n/supplemental_pages.mjs";
 
-const pages = [...mainPages, ...academicPages, ...methodPagesCore1, ...methodPagesCore2, ...methodPagesData];
+for (const page of japaneseSupplementalPages) renderJapanesePage(page);
+
+const pages = [...mainPages, ...academicPages, ...methodPagesCore1, ...methodPagesCore2, ...methodPagesData, ...englishSupplementalPages];
 for (const page of pages) renderEnglishPage(page);
 
 const base = "https://saka-d.github.io/homepage";
