@@ -165,7 +165,7 @@ const person = {
     "@type": "CollegeOrUniversity", name: "Yokohama National University",
     url: "https://www.ynu.ac.jp/english/",
   },
-  sameAs: ["https://researchmap.jp/sakaguchi-daimon", "https://scholar.google.com/scholar?q=%22Daimon+Sakaguchi%22", "https://github.com/saka-d"],
+  sameAs: ["https://researchmap.jp/sakaguchi-daimon", "https://scholar.google.co.jp/citations?user=vYnG95MAAAAJ&hl=ja&oi=ao", "https://github.com/saka-d"],
   knowsAbout: ["Computational chemistry", "Physical organic chemistry", "Reaction selectivity", "Cheminformatics", "Stereoelectronic-state informatics"],
 };
 

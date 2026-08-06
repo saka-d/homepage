@@ -286,6 +286,11 @@ main,
     gap: 0.85rem;
 }
 
+.profile-links {
+    margin-top: 0.9rem;
+    font-size: 0.94rem;
+}
+
 .btn {
     display: inline-flex;
     align-items: center;
