@@ -1,7 +1,20 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google tag (gtag.js) -->
+<script data-google-analytics>
+  if (window.location.hostname === "saka-d.github.io") {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){window.dataLayer.push(arguments);};
+    window.gtag('js', new Date());
+    window.gtag('config', "G-6BND9FCBZV");
+    const googleTag = document.createElement('script');
+    googleTag.async = true;
+    googleTag.src = 'https://www.googletagmanager.com/gtag/js?id=G-6BND9FCBZV';
+    document.head.appendChild(googleTag);
+  }
+</script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Daimon Sakaguchi"><meta name="DC.creator" content="Daimon Sakaguchi"><meta name="robots" content="index,follow,max-image-preview:large"><meta name="description" content="計算条件、cube、データ分割、環境、命名、公開前検証を整理します。">
     <link rel="canonical" href="https://saka-d.github.io/homepage/pages/methods/reproducibility.html"><link rel="alternate" hreflang="ja" href="https://saka-d.github.io/homepage/pages/methods/reproducibility.html"><link rel="alternate" hreflang="en" href="https://saka-d.github.io/homepage/en/pages/methods/reproducibility.html"><link rel="alternate" hreflang="x-default" href="https://saka-d.github.io/homepage/pages/methods/reproducibility.html">
     <meta property="og:type" content="article"><meta property="og:locale" content="ja_JP"><meta property="og:site_name" content="坂口 大門 | Daimon Sakaguchi"><meta property="og:title" content="計算・解析の再現可能性 | 計算化学ノート"><meta property="og:description" content="計算条件、cube、データ分割、環境、命名、公開前検証を整理します。"><meta property="og:url" content="https://saka-d.github.io/homepage/pages/methods/reproducibility.html"><meta name="twitter:card" content="summary">
@@ -22,7 +35,7 @@
   environment/     # versions and installation records</code></pre></section><section class="docs-section" id="naming"><h2>2. 命名とmetadata</h2><p>sample ID、配座ID、電荷、多重度、method、basis、溶媒、計算段階を機械的に結合し、表示用名称と分離します。CSV/JSONには単位、欠損値規則、原子index規則、生成スクリプトのcommitを保存します。</p></section><section class="docs-section" id="calculation"><h2>3. 電子状態計算</h2><ul><li>softwareとrevision、計算資源</li><li>geometry、charge、multiplicity</li><li>method、basis、ECP、dispersion、grid</li><li>SCF・最適化・振動数の収束</li><li>温度、圧力、標準状態、熱補正</li><li>再計算・再開時のcheckpoint対応</li></ul></section><section class="docs-section" id="fields"><h2>4. Cubeと実空間解析</h2><p>物理量、原点、三本のaxis vector、shape、単位、spacing、fragment、isovalue、カラーレンジを保存します。差分やpixel-wise modelでは、grid一致をプログラムで検証します。</p></section><section class="docs-section" id="models"><h2>5. 機械学習</h2><p>元データ、固定test set、group ID、前処理pipeline、乱数シード、hyperparameter探索範囲、評価指標を保存します。標準化・PCA・特徴選択はvalidation foldの外でfitしません。</p></section><section class="docs-section" id="checklist"><h2>6. 公開前チェック</h2><ol><li>新しい環境で生成スクリプトを実行できる。</li><li>原データから主要表・図まで追跡できる。</li><li>手作業の変更をREADMEへ記録した。</li><li>ライセンス・引用・公開可否を確認した。</li><li>機密構造や個人情報を除外した。</li><li>Methodsページの対象versionと最終確認日を更新した。</li></ol></section><section class="docs-section" id="site-maintenance"><h2>7. このサイトの再生成と保守</h2><p>本文、日英ページ、計算例への接続、検索索引、構造化データはスクリプトから再生成します。生成物だけを直接直すと次回の実行で失われるため、対応する <code>scripts/i18n/</code> または後処理スクリプトを修正します。</p><pre><code>npm run i18n:generate
 npm run i18n:markup
 npm run verify:site</code></pre><ul><li><code>i18n:generate</code>: 日英ページ、計算例、章間リンク、検索索引、JSON-LDを再生成。</li><li><code>i18n:check</code>: 日英ページ数、翻訳漏れ、章・コード例の対応を検査。</li><li><code>site:validate</code>: ローカルリンク、重複ID、canonical、JSON-LD、検索索引、計算メタデータを検査。</li></ul><div class="callout"><strong>計算例の来歴</strong><p>各 <code>assets/calculations/*/metadata.json</code> に分子、手法、ソフトウェアバージョン、乱数シードまたは格子条件、検証値、教育用例である旨を保存します。</p></div></section><p class="method-review">最終確認: 2026年8月4日</p></div></div></section></main>
-    <footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer>
+    <footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="../privacy.html">アクセス解析とプライバシー</a> · <a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer>
     <script src="../../scripts/main.js?v=20260806-1"></script>
 </body>
 </html>

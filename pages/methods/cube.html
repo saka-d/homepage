@@ -1,7 +1,20 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google tag (gtag.js) -->
+<script data-google-analytics>
+  if (window.location.hostname === "saka-d.github.io") {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){window.dataLayer.push(arguments);};
+    window.gtag('js', new Date());
+    window.gtag('config', "G-6BND9FCBZV");
+    const googleTag = document.createElement('script');
+    googleTag.async = true;
+    googleTag.src = 'https://www.googletagmanager.com/gtag/js?id=G-6BND9FCBZV';
+    document.head.appendChild(googleTag);
+  }
+</script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Daimon Sakaguchi"><meta name="DC.creator" content="Daimon Sakaguchi"><meta name="robots" content="index,follow,max-image-preview:large"><meta name="description" content="Gaussian cubeファイルの構造、格子、単位、電子密度・分子軌道・静電ポテンシャル、生成・演算・可視化を解説します。">
     <link rel="canonical" href="https://saka-d.github.io/homepage/pages/methods/cube.html"><link rel="alternate" hreflang="ja" href="https://saka-d.github.io/homepage/pages/methods/cube.html"><link rel="alternate" hreflang="en" href="https://saka-d.github.io/homepage/en/pages/methods/cube.html"><link rel="alternate" hreflang="x-default" href="https://saka-d.github.io/homepage/pages/methods/cube.html">
     <meta property="og:type" content="article"><meta property="og:locale" content="ja_JP"><meta property="og:site_name" content="坂口 大門 | Daimon Sakaguchi"><meta property="og:title" content="Cube files | 計算化学ノート"><meta property="og:description" content="電子状態計算と三次元場解析をつなぐcubeファイルを解説します。"><meta property="og:url" content="https://saka-d.github.io/homepage/pages/methods/cube.html"><meta name="twitter:card" content="summary">
@@ -62,7 +75,7 @@ cubegen.orbital(mol, "water_homo.cube", mf.mo_coeff[:, homo],
             </div>
         </div></section>
     </main>
-    <footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer><script src="../../scripts/main.js?v=20260806-1"></script>
+    <footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="../privacy.html">アクセス解析とプライバシー</a> · <a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer><script src="../../scripts/main.js?v=20260806-1"></script>
 <script src="../../assets/vendor/3dmol/3Dmol-min.js"></script><script src="../../scripts/molecular-viewers.js?v=20260804-2"></script>
 </body>
 </html>

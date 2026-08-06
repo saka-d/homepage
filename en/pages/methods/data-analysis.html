@@ -1,7 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google tag (gtag.js) -->
+<script data-google-analytics>
+  if (window.location.hostname === "saka-d.github.io") {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){window.dataLayer.push(arguments);};
+    window.gtag('js', new Date());
+    window.gtag('config', "G-6BND9FCBZV");
+    const googleTag = document.createElement('script');
+    googleTag.async = true;
+    googleTag.src = 'https://www.googletagmanager.com/gtag/js?id=G-6BND9FCBZV';
+    document.head.appendChild(googleTag);
+  }
+</script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Daimon Sakaguchi"><meta name="DC.creator" content="Daimon Sakaguchi"><meta name="robots" content="index,follow,max-image-preview:large"><meta name="description" content="Guide to NumPy matrices, Ridge, Lasso, Elastic Net, cross-validation, PCA, and SHAP for chemical data.">
     <link rel="canonical" href="https://saka-d.github.io/homepage/en/pages/methods/data-analysis.html"><link rel="alternate" hreflang="ja" href="https://saka-d.github.io/homepage/pages/methods/data-analysis.html"><link rel="alternate" hreflang="en" href="https://saka-d.github.io/homepage/en/pages/methods/data-analysis.html"><link rel="alternate" hreflang="x-default" href="https://saka-d.github.io/homepage/pages/methods/data-analysis.html">
     <meta property="og:type" content="article"><meta property="og:locale" content="en_US"><meta property="og:site_name" content="Daimon Sakaguchi"><meta property="og:title" content="Numerical Analysis and Machine Learning | Computational Chemistry Notes"><meta property="og:description" content="Guide to NumPy matrices, Ridge, Lasso, Elastic Net, cross-validation, PCA, and SHAP for chemical data."><meta property="og:url" content="https://saka-d.github.io/homepage/en/pages/methods/data-analysis.html"><meta name="twitter:card" content="summary">
@@ -41,7 +54,7 @@ explainer = shap.Explainer(fitted_model, X_background)
 shap_values = explainer(X_test)
 shap.plots.beeswarm(shap_values)
 shap.plots.waterfall(shap_values[0])</code></pre></section><section class="docs-section" id="workflow"><h2>8. Practical workflow</h2><ol><li>Define the prediction unit and target before calculating features.</li><li>Freeze structure standardization and descriptor definitions.</li><li>Reserve a chemically meaningful external or grouped test set.</li><li>Place every learned preprocessing step inside a pipeline.</li><li>Tune hyperparameters with nested or clearly separated validation.</li><li>Report baselines, uncertainty, and applicability domain.</li><li>Use coefficients, PCA, and SHAP to form hypotheses, then test them with independent chemistry.</li></ol></section><section class="docs-section" id="references"><h2>9. References</h2><ul class="reference-list"><li><a href="https://numpy.org/doc/stable/user/index.html" target="_blank" rel="noopener noreferrer">NumPy User Guide</a></li><li><a href="https://scikit-learn.org/stable/modules/linear_model.html" target="_blank" rel="noopener noreferrer">scikit-learn linear models</a></li><li><a href="https://scikit-learn.org/stable/modules/decomposition.html" target="_blank" rel="noopener noreferrer">scikit-learn PCA</a></li><li><a href="https://shap.readthedocs.io/en/stable/api.html" target="_blank" rel="noopener noreferrer">SHAP documentation</a></li><li><a href="https://scikit-learn.org/stable/modules/compose.html" target="_blank" rel="noopener noreferrer">scikit-learn pipelines</a></li><li><a href="https://scikit-learn.org/stable/modules/cross_validation.html" target="_blank" rel="noopener noreferrer">Cross-validation guidance</a></li></ul></section><p class="method-review">Last reviewed: August 4, 2026. Check the linked official documentation for syntax specific to the installed software version.</p></div></div></section></main>
-    <footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer>
+    <footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="../privacy.html">Analytics and Privacy</a> · <a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer>
     <script src="../../../scripts/main.js?v=20260806-1"></script>
 </body>
 </html>

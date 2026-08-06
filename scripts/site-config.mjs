@@ -4,4 +4,5 @@ export const siteConfig = {
   lastReviewedJa: "2026年8月4日",
   lastReviewedEn: "August 4, 2026",
   assetVersion: "20260806-1",
+  analyticsMeasurementId: "G-6BND9FCBZV",
 };

@@ -1,7 +1,20 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script data-google-analytics>
+  if (window.location.hostname === "saka-d.github.io") {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){window.dataLayer.push(arguments);};
+    window.gtag('js', new Date());
+    window.gtag('config', "G-6BND9FCBZV");
+    const googleTag = document.createElement('script');
+    googleTag.async = true;
+    googleTag.src = 'https://www.googletagmanager.com/gtag/js?id=G-6BND9FCBZV';
+    document.head.appendChild(googleTag);
+  }
+</script>
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Daimon Sakaguchi"><meta name="DC.creator" content="Daimon Sakaguchi"><meta name="robots" content="index,follow,max-image-preview:large"><meta name="description" content="坂口大門の計算化学・ケモインフォマティクスノート。構造・電子状態計算と、化学情報・データ解析の二つの流れを解説します。">
     <link rel="canonical" href="https://saka-d.github.io/homepage/pages/methods/"><link rel="alternate" hreflang="ja" href="https://saka-d.github.io/homepage/pages/methods/"><link rel="alternate" hreflang="en" href="https://saka-d.github.io/homepage/en/pages/methods/"><link rel="alternate" hreflang="x-default" href="https://saka-d.github.io/homepage/pages/methods/">
@@ -65,7 +78,7 @@
         <section class="section-band"><div class="container"><div class="section-heading"><p class="section-kicker">Concepts and Reference</p><h2>手法を横断して読む</h2><p>個別ソフトウェアの操作から離れ、研究設計・記述子・再現性を共通の言葉で整理します。</p></div><div class="topic-detail-grid"><a href="reaction-selectivity.html"><strong>反応選択性解析</strong><span>生成比、ΔΔG‡、配座ensemble、統計モデル</span></a><a href="electronic-descriptors.html"><strong>電子状態・立体記述子</strong><span>密度、ESP、Fukui、NCI/IGMH、Sterimol</span></a><a href="reproducibility.html"><strong>再現可能な計算と解析</strong><span>計算条件、環境、データ分割、公開前検証</span></a><a href="glossary.html"><strong>用語集</strong><span>計算化学・ケモインフォマティクス・機械学習</span></a></div></div></section>
     </main>
 
-    <footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer>
+    <footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="../privacy.html">アクセス解析とプライバシー</a> · <a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer>
     <script src="../../scripts/main.js?v=20260806-1"></script>
 </body>
 </html>

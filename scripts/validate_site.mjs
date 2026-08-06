@@ -30,6 +30,11 @@ for (const file of htmlFiles) {
   }
   if (!html.includes('rel="alternate" hreflang="ja"') || !html.includes('rel="alternate" hreflang="en"')) errors.push(`${file}: bilingual hreflang missing`);
   if (!html.includes('meta name="description"') || !html.includes('meta name="author"')) errors.push(`${file}: description or author metadata missing`);
+  const analyticsBlocks = html.match(/<script data-google-analytics>/g) || [];
+  if (analyticsBlocks.length !== 1) errors.push(`${file}: expected exactly one Google Analytics block, found ${analyticsBlocks.length}`);
+  if (!html.includes(siteConfig.analyticsMeasurementId)) errors.push(`${file}: Google Analytics measurement ID missing`);
+  if (!html.includes('window.location.hostname === "saka-d.github.io"')) errors.push(`${file}: production-only analytics guard missing`);
+  if (!/href="[^"]*privacy\.html"/.test(html)) errors.push(`${file}: analytics privacy link missing`);
   const schemas = [...html.matchAll(/<script type="application\/ld\+json"(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)];
   if (schemas.length !== 1) errors.push(`${file}: expected exactly one JSON-LD block, found ${schemas.length}`);
   for (const match of schemas) {

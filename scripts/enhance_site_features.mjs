@@ -6,6 +6,7 @@ import { publicationJsonLd } from "./data/publications.mjs";
 import { siteConfig } from "./site-config.mjs";
 
 const base = siteConfig.baseUrl;
+const analyticsHost = new URL(base).hostname;
 const pageFiles = [
   "index.html", "pages/about.html", "pages/contact.html", "pages/cv.html",
   "pages/electronic-structure.html", "pages/news.html", "pages/publications.html",
@@ -17,8 +18,38 @@ const pageFiles = [
   "pages/methods/psi4.html", "pages/methods/py3dmol.html", "pages/methods/pyscf.html",
   "pages/methods/rdkit.html", "pages/methods/reaction-selectivity.html",
   "pages/methods/reproducibility.html", "pages/methods/steric-descriptors.html",
-  "pages/methods/xtb.html", "pages/search.html",
+  "pages/methods/xtb.html", "pages/privacy.html", "pages/search.html",
 ];
+
+const analyticsTag = `<!-- Google tag (gtag.js) -->
+<script data-google-analytics>
+  if (window.location.hostname === ${JSON.stringify(analyticsHost)}) {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){window.dataLayer.push(arguments);};
+    window.gtag('js', new Date());
+    window.gtag('config', ${JSON.stringify(siteConfig.analyticsMeasurementId)});
+    const googleTag = document.createElement('script');
+    googleTag.async = true;
+    googleTag.src = 'https://www.googletagmanager.com/gtag/js?id=${siteConfig.analyticsMeasurementId}';
+    document.head.appendChild(googleTag);
+  }
+</script>`;
+
+const privacyBody = (lang) => {
+  const ja = lang === "ja";
+  return `<section class="page-hero"><div class="container"><p class="eyebrow">Privacy</p><h1>${ja ? "アクセス解析とプライバシー" : "Analytics and Privacy"}</h1><p class="lead">${ja ? "このサイトで行うアクセス解析と、取得される情報について説明します。" : "How this website uses analytics and handles related information."}</p></div></section><section class="section-band"><div class="container docs-content"><section class="docs-section"><h2>${ja ? "Google Analyticsの利用" : "Use of Google Analytics"}</h2><p>${ja ? "このサイトでは、閲覧状況を把握して内容と操作性を改善するため、Google Analytics 4を利用しています。Google Analyticsは、閲覧ページ、参照元、端末・ブラウザーの種類、おおよその地域などの利用情報をCookie等により収集する場合があります。" : "This website uses Google Analytics 4 to understand site usage and improve its content and usability. Google Analytics may use cookies and similar technologies to collect information such as pages viewed, referral source, device and browser type, and approximate location."}</p><p>${ja ? "このサイトでは氏名やメールアドレスをGoogle Analyticsへ送信する独自設定を行っていません。収集された情報はGoogleの規約とプライバシーポリシーに基づいて処理されます。" : "This website does not configure Google Analytics to send names, email addresses, or other directly identifying information. Collected information is processed under Google's terms and privacy policy."}</p></section><section class="docs-section"><h2>${ja ? "計測を無効にする方法" : "How to opt out"}</h2><p>${ja ? "Cookieはブラウザーの設定から制限または削除できます。また、Googleが提供するオプトアウトアドオンを利用してGoogle Analyticsによる計測を無効にできます。" : "You can restrict or delete cookies in your browser settings. Google also provides an opt-out browser add-on that can disable measurement by Google Analytics."}</p><ul class="link-list"><li><a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">${ja ? "Google プライバシーポリシー" : "Google Privacy Policy"}</a></li><li><a href="https://tools.google.com/dlpage/gaoptout/" target="_blank" rel="noopener noreferrer">${ja ? "Google Analytics オプトアウト アドオン" : "Google Analytics Opt-out Browser Add-on"}</a></li></ul></section><section class="docs-section"><h2>${ja ? "ローカル環境" : "Local preview"}</h2><p>${ja ? "localhost、127.0.0.1、またはHTMLファイルを直接開いた場合には、Google Analyticsを読み込みません。" : "Google Analytics is not loaded for localhost, 127.0.0.1, or pages opened directly as local files."}</p></section><p class="method-review">${ja ? `最終更新: ${siteConfig.lastReviewedJa}` : `Last updated: ${siteConfig.lastReviewedEn}`}</p></div></section>`;
+};
+
+renderJapanesePage({
+  file: "pages/privacy.html", active: "", title: "アクセス解析とプライバシー | 坂口 大門",
+  description: "坂口大門のホームページにおけるGoogle Analyticsの利用とプライバシーに関する説明です。",
+  ogType: "website", body: privacyBody("ja"),
+});
+renderEnglishPage({
+  file: "pages/privacy.html", active: "", title: "Analytics and Privacy | Daimon Sakaguchi",
+  description: "Information about Google Analytics and privacy on Daimon Sakaguchi's website.",
+  ogType: "website", body: privacyBody("en"),
+});
 
 const searchBody = (lang) => {
   const ja = lang === "ja";
@@ -192,12 +223,18 @@ for (const source of pageFiles) {
     const outputDir = path.dirname(file);
     const searchTarget = lang === "ja" ? "pages/search.html" : "en/pages/search.html";
     const searchHref = path.relative(outputDir, searchTarget).replaceAll(path.sep, "/");
+    const privacyTarget = lang === "ja" ? "pages/privacy.html" : "en/pages/privacy.html";
+    const privacyHref = path.relative(outputDir, privacyTarget).replaceAll(path.sep, "/");
     html = html.replace(/<a class="site-search-link"[\s\S]*?<\/a>/, "");
     html = html.replace(/(<div class="language-switcher")/, `<a class="site-search-link" href="${searchHref}" aria-label="${lang === "ja" ? "サイト全体を検索" : "Search this site"}">${lang === "ja" ? "検索" : "Search"}</a>$1`);
     html = html.replace(/<meta name="author"[^>]*>/g, "").replace(/<meta name="robots"[^>]*>/g, "").replace(/<meta name="DC\.creator"[^>]*>/g, "");
     const robots = source === "pages/search.html" ? "noindex,follow" : "index,follow,max-image-preview:large";
     html = html.replace("<meta name=\"description\"", `<meta name="author" content="Daimon Sakaguchi"><meta name="DC.creator" content="Daimon Sakaguchi"><meta name="robots" content="${robots}"><meta name="description"`);
     html = html.replace(/<script type="application\/ld\+json"(?:\s[^>]*)?>[\s\S]*?<\/script>/g, "");
+    html = html.replace(/\s*<!-- Google tag \(gtag\.js\) -->[\s\S]*?<script data-google-analytics>[\s\S]*?<\/script>\s*/g, "");
+    html = html.replace(/<head>\s*/, `<head>\n${analyticsTag}\n`);
+    html = html.replace(/(<footer class="site-footer">[\s\S]*?<div class="container footer-inner">[\s\S]*?<p>)(<a href="https:\/\/github\.com\/saka-d"[^>]*>GitHub<\/a>)(<\/p>)/,
+      `$1<a href="${privacyHref}">${lang === "ja" ? "アクセス解析とプライバシー" : "Analytics and Privacy"}</a> · $2$3`);
     let pageSchema;
     if (source === "index.html") {
       pageSchema = { "@type": "ProfilePage", "@id": `${canonical}#profile`, url: canonical, name: title, description, inLanguage: lang, dateModified: siteConfig.lastModified, mainEntity: { "@id": `${base}/#person` }, isPartOf: { "@id": `${base}/#website` } };

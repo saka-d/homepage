@@ -23,7 +23,8 @@ npm run verify:site
 - 日英29組のページを生成
 - 計算例、Multiwfnへの接続、研究ワークフローを反映
 - 用語集、検索ページ、検索索引、JSON-LDを生成
-- hreflang、翻訳漏れ、ローカルリンク、重複ID、canonical、検索索引、計算メタデータを検査
+- Google Analyticsタグを公開ドメインに限定して全ページへ生成
+- hreflang、翻訳漏れ、ローカルリンク、重複ID、canonical、アクセス解析、検索索引、計算メタデータを検査
 
 計算結果そのものを再生成する場合だけ、Python環境とNCIplotを用意して `npm run examples:generate` を実行します。条件は [assets/calculations/README.md](assets/calculations/README.md) を参照してください。
 
@@ -34,6 +35,7 @@ npm run verify:site
 - `scripts/add_cross_chapter_content.mjs`: Multiwfn接続と研究ワークフロー
 - `scripts/enhance_site_features.mjs`: 検索、用語集、SEO、表記統一
 - `scripts/validate_site.mjs`: 公開前の静的検査
+- `scripts/site-config.mjs`: 公開URL、更新日、Google Analytics測定IDなどの共通設定
 - `scripts/main.js`: 検索、絞り込み、ナビゲーションの動作
 - `styles/main.css`: 全体の表示
 - `assets/calculations/`: 計算結果と来歴メタデータ

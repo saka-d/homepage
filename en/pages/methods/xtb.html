@@ -1,7 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google tag (gtag.js) -->
+<script data-google-analytics>
+  if (window.location.hostname === "saka-d.github.io") {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){window.dataLayer.push(arguments);};
+    window.gtag('js', new Date());
+    window.gtag('config', "G-6BND9FCBZV");
+    const googleTag = document.createElement('script');
+    googleTag.async = true;
+    googleTag.src = 'https://www.googletagmanager.com/gtag/js?id=G-6BND9FCBZV';
+    document.head.appendChild(googleTag);
+  }
+</script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Daimon Sakaguchi"><meta name="DC.creator" content="Daimon Sakaguchi"><meta name="robots" content="index,follow,max-image-preview:large"><meta name="description" content="xTB guide to GFN methods, single points, geometry optimization, Hessians, solvent models, and validation.">
     <link rel="canonical" href="https://saka-d.github.io/homepage/en/pages/methods/xtb.html"><link rel="alternate" hreflang="ja" href="https://saka-d.github.io/homepage/pages/methods/xtb.html"><link rel="alternate" hreflang="en" href="https://saka-d.github.io/homepage/en/pages/methods/xtb.html"><link rel="alternate" hreflang="x-default" href="https://saka-d.github.io/homepage/pages/methods/xtb.html">
     <meta property="og:type" content="article"><meta property="og:locale" content="en_US"><meta property="og:site_name" content="Daimon Sakaguchi"><meta property="og:title" content="xTB | Computational Chemistry Notes"><meta property="og:description" content="xTB guide to GFN methods, single points, geometry optimization, Hessians, solvent models, and validation."><meta property="og:url" content="https://saka-d.github.io/homepage/en/pages/methods/xtb.html"><meta name="twitter:card" content="summary">
@@ -15,7 +28,7 @@
 xtb structure.xyz --opt tight --gfn 2
 xtb xtbopt.xyz --hess --gfn 2</code></pre></div><p><code>--chrg</code> is the total charge and <code>--uhf</code> is the number of unpaired electrons, not the spin multiplicity. Inspect the output for SCC convergence and the final total energy.</p></section><section class="docs-section" id="optimization"><h2>4. Geometry optimization</h2><pre><code>xtb structure.xyz --opt tight --gfn 2 --chrg 0 --uhf 0
 # Optimized coordinates are normally written to xtbopt.xyz.</code></pre><p>Optimization convergence does not establish whether the structure is a minimum. Inspect chemical connectivity and follow with a Hessian when the stationary-point character matters.</p></section><section class="docs-section" id="hessian"><h2>5. Hessian, frequencies, and thermochemistry</h2><pre><code>xtb xtbopt.xyz --hess --gfn 2 --chrg 0 --uhf 0</code></pre><p>The Hessian provides approximate vibrational frequencies and thermal corrections. Imaginary modes indicate that the geometry is not a minimum, subject to numerical noise and the treatment of very soft modes.</p></section><section class="docs-section" id="solvent"><h2>6. Solvent models</h2><p>GBSA and ALPB provide implicit-solvent corrections. Record the solvent model and solvent name, and do not mix gas-phase and solvated energies without a defined thermodynamic cycle.</p><div class="code-sample"><div class="code-label"><span>Shell</span><button class="copy-button" type="button" data-copy-target="en-xtb-solv">Copy</button></div><pre id="en-xtb-solv"><code>xtb structure.xyz --opt --alpb chloroform</code></pre></div><p>Implicit solvent does not represent specific solvent molecules or every change in association equilibrium. Include explicit solvent molecules when a mechanistically essential interaction requires them, and state how they were sampled.</p></section><section class="docs-section" id="workflow"><h2>7. Screening workflow</h2><ol><li>Generate diverse conformers.</li><li>Optimize consistently with fixed charge and spin.</li><li>Remove duplicates using geometry and energy.</li><li>Refine several candidates with DFT.</li><li>Compare whether relative ordering is stable.</li></ol><p>For thermochemistry, confirm that the optimized geometry is a minimum and inspect low-frequency modes. Store the xTB version, method, charge, UHF value, solvent model, optimization level, and command line with every result.</p></section><section class="docs-section" id="references"><h2>8. References</h2><ul class="reference-list"><li><a href="https://xtb-docs.readthedocs.io/" target="_blank" rel="noopener noreferrer">xTB documentation</a></li><li><a href="https://github.com/grimme-lab/xtb" target="_blank" rel="noopener noreferrer">xTB source repository</a></li><li><a href="https://doi.org/10.1002/wcms.1493" target="_blank" rel="noopener noreferrer">GFN methods review</a></li></ul></section><p class="method-review">Last reviewed: August 4, 2026. Check the linked official documentation for syntax specific to the installed software version.</p></div></div></section></main>
-    <footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer>
+    <footer class="site-footer"><div class="container footer-inner"><p>&copy; <span data-current-year>2026</span> Sakaguchi Daimon.</p><p><a href="../privacy.html">Analytics and Privacy</a> · <a href="https://github.com/saka-d" target="_blank" rel="noopener noreferrer">GitHub</a></p></div></footer>
     <script src="../../../scripts/main.js?v=20260806-1"></script>
 </body>
 </html>

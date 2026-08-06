@@ -15,7 +15,8 @@ const pages = [...mainPages, ...academicPages, ...methodPagesCore1, ...methodPag
 for (const page of pages) renderEnglishPage(page);
 
 const base = siteConfig.baseUrl;
-const sitemapEntries = pages.flatMap((page) => {
+const sitemapPages = [...pages, { file: "pages/privacy.html" }];
+const sitemapEntries = sitemapPages.flatMap((page) => {
   const ja = page.file === "index.html" ? `${base}/` : `${base}/${page.file}`;
   const en = page.file === "index.html" ? `${base}/en/` : `${base}/en/${page.file}`;
   const alternates = `<xhtml:link rel="alternate" hreflang="ja" href="${ja}"/><xhtml:link rel="alternate" hreflang="en" href="${en}"/><xhtml:link rel="alternate" hreflang="x-default" href="${ja}"/>`;
